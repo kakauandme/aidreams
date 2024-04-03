@@ -19,7 +19,7 @@ npm install
 ### Compile and Hot-Reload for Development
 
 ```sh
-pm run pages:dev
+npm run pages:dev
 ```
 
 ### Compile and Minify for Production

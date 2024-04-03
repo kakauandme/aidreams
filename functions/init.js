@@ -9,7 +9,7 @@ export async function onRequestGet(context) {
     latitude: context.request.cf.latitude,
     longitude: context.request.cf.longitude
   }
-
+  // console.log(context.request.cf);
   // make a request to openweathermap api to get current weather
 
   data.units =
@@ -21,7 +21,7 @@ export async function onRequestGet(context) {
       `https://api.openweathermap.org/data/3.0/onecall?lat=${data.latitude}&lon=${data.longitude}&exclude=minutely,hourly,daily,alerts&units=${data.units}&appid=${context.env.WEATHER_API_KEY}`
     )
     const weatherData = await weatherResponse.json()
-
+    //console.log(weatherData);
     data.temp = Math.round(weatherData.current.temp)
     data.name = weatherData.current.weather[0].main
     data.description = weatherData.current.weather[0].description
@@ -54,7 +54,7 @@ export async function onRequestGet(context) {
   //     console.log(e)
   // }
 
-  console.log(data)
+  // console.log(data)
 
   return new Response(JSON.stringify(data), {
     headers: {
