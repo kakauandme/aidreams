@@ -5,29 +5,42 @@
 import { ref, computed } from 'vue'
 
 const isLoading = ref(true)
-const weather = ref({ })
-const unsplashPhoto  = computed(() => {
-  return  isLoading.value ? null : "url(https://source.unsplash.com/daily?" + weather.value.city + "%20" + weather.value.country + ")";
+const data = ref({})
+const unsplashPhoto = computed(() => {
+  return isLoading.value
+    ? null
+    : 'url(https://source.unsplash.com/daily?' +
+        data.value.city +
+        '%20' +
+        data.value.country +
+        ',' +
+        data.value.weather.name +
+        ')'
 })
 
-function updateTags(){
-  
-  document.querySelector('link[rel="icon"]').href = weather.value.icon;
-  document.title =  weather.value.temp + "°" + weather.value.symbol + " and " +  weather.value.description + " in " + weather.value.city + " | WeatherScape";
-  
+function updateTags() {
+  document.querySelector('link[rel="icon"]').href = data.value.weather.icon
+  document.title =
+    data.value.weather.temp +
+    '°' +
+    data.value.symbol +
+    ' and ' +
+    data.value.weather.description +
+    ' in ' +
+    data.value.city +
+    ' | WeatherScape'
 }
-
 
 async function init() {
   try {
     isLoading.value = true
     const response = await fetch('/init')
 
-    const data = await response.json()
+    const response_data = await response.json()
 
-    console.log(data)
-    weather.value = data
-    updateTags();
+    console.log(response_data)
+    data.value = response_data
+    updateTags()
   } catch (e) {
     console.error('Error: ', e)
   } finally {
@@ -39,20 +52,20 @@ init()
 </script>
 
 <template>
-
   <section
-      :style="{
-      backgroundImage:unsplashPhoto  
-    }">
+    :style="{
+      backgroundImage: unsplashPhoto
+    }"
+  >
     <header>
       <p>WeatherScape</p>
     </header>
     <main v-if="!isLoading">
-      <h4>{{ weather.city }}</h4>
-      <p>{{ weather.region }}, {{ weather.country }}</p>
-      <img class="icon" :src="weather.icon" alt="Weather icon" width="100" height="100" />
-      <h1>{{ weather.temp }}°{{ weather.symbol }}</h1>
-      <p class="description">{{ weather.description }}</p>
+      <h4>{{ data.city }}</h4>
+      <p>{{ data.region }}, {{ data.country }}</p>
+      <img class="icon" :src="data.weather.icon" alt="Weather icon" width="100" height="100" />
+      <h1>{{ data.weather.temp }}°{{ data.symbol }}</h1>
+      <p class="description">{{ data.weather.description }}</p>
     </main>
     <!-- <RouterView /> -->
     <footer>
@@ -83,18 +96,6 @@ section {
 
 section > * {
   padding: 1rem;
-  /* text-shadow: 0 0 1rem rgba(var(--color-background), 0.8); */
-}
-
-
-
-section > * > p {
-  margin: 0;
-}
-
-section > header {
-  grid-area: header;
-
 }
 
 section > main {
@@ -105,7 +106,7 @@ section > main {
   margin: auto;
   text-align: center;
 
-  background: rgba(var(--color-background), 0.25); 
+  background: rgba(var(--color-background), 0.25);
   box-shadow: 0 0 2rem rgba(var(--color-text), 0.1);
   backdrop-filter: blur(0.25rem);
   border: 1px solid rgba(var(--color-background), 0.25);
@@ -113,12 +114,25 @@ section > main {
   /* From https://css.glass */
 }
 
+section {
+  header,
+  footer {
+    text-shadow: 0 0 2rem rgba(var(--color-background), 0.9);
+  }
+}
+
+section > header {
+  grid-area: header;
+}
+
 section > footer {
   grid-area: footer;
   text-align: right;
-
 }
 
+section > * > p {
+  margin: 0;
+}
 .description::first-letter {
   text-transform: uppercase;
 }

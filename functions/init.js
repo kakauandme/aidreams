@@ -1,4 +1,31 @@
-import OpenAI from 'openai'
+// import OpenAI from 'openai'
+
+import getCountryName from './helpers/countries'
+
+async function getWeather(latitude, longitude, units, api_key) {
+  console.log('fetching weather')
+  let result = {}
+
+  try {
+    const weatherResponse = await fetch(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,daily,alerts&units=${units}&appid=${api_key}`
+    )
+    const weatherData = await weatherResponse.json()
+
+    //console.log(weatherData);
+    result.temp = Math.round(weatherData.current.temp)
+    result.name = weatherData.current.weather[0].main
+    result.description = weatherData.current.weather[0].description
+    result.icon = `https://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`
+    result.timezone_offset = weatherData.timezone_offset
+    result.time = weatherData.current.dt
+    result.sunrise = weatherData.current.sunrise
+    result.sunset = weatherData.current.sunset
+  } catch (e) {
+    console.log(e)
+  }
+  return result
+}
 
 export async function onRequestGet(context) {
   const data = {
@@ -16,22 +43,27 @@ export async function onRequestGet(context) {
     data.country === 'US' || data.country === 'LR' || data.country === 'MM' ? 'imperial' : 'metric'
   data.symbol = data.units === 'imperial' ? 'F' : 'C'
 
-  try {
-    const weatherResponse = await fetch(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${data.latitude}&lon=${data.longitude}&exclude=minutely,hourly,daily,alerts&units=${data.units}&appid=${context.env.WEATHER_API_KEY}`
+  data.country_code = data.country
+  data.country = getCountryName(data.country_code)
+
+  const weather_key = 'weather_' + data.latitude + '_' + data.longitude
+
+  const weather_cache = await context.env.weatherscape_KV.get(weather_key)
+
+  console.log(weather_key)
+
+  if (!weather_cache) {
+    data.weather = await getWeather(
+      data.latitude,
+      data.longitude,
+      data.units,
+      context.env.WEATHER_API_KEY
     )
-    const weatherData = await weatherResponse.json()
-    //console.log(weatherData);
-    data.temp = Math.round(weatherData.current.temp)
-    data.name = weatherData.current.weather[0].main
-    data.description = weatherData.current.weather[0].description
-    data.icon = `https://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`
-    data.timezone_offset = weatherData.timezone_offset
-    data.time = weatherData.current.dt
-    data.sunrise = weatherData.current.sunrise
-    data.sunset = weatherData.current.sunset
-  } catch (e) {
-    console.log(e)
+    await context.env.weatherscape_KV.put(weather_key, JSON.stringify(data.weather), {
+      expirationTtl: 60 * 15
+    })
+  } else {
+    data.weather = JSON.parse(weather_cache)
   }
 
   // try {
@@ -54,7 +86,7 @@ export async function onRequestGet(context) {
   //     console.log(e)
   // }
 
-  // console.log(data)
+  console.log(data)
 
   return new Response(JSON.stringify(data), {
     headers: {
