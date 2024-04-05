@@ -2,5 +2,5 @@
 // import TheWelcome from '../components/TheWelcome.vue'
 </script>
 
-<template><h1>Empty</h1></template>
+<template><h1>Home View</h1></template>
 <style scoped></style>
