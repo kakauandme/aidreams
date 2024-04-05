@@ -90,7 +90,8 @@ export async function onRequestGet(context) {
 
   return new Response(JSON.stringify(data), {
     headers: {
-      'content-type': 'application/json;charset=UTF-8'
+      'content-type': 'application/json;charset=UTF-8',
+      'Cache-Control': 'max-age=300' //  (60s * 5) = 300s or 5m
     }
   })
 }
