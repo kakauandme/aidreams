@@ -23,6 +23,7 @@ export async function onRequestGet(context) {
 
   data.image = await getImage(data, context.env.weatherscape_KV, context.env.OPENAI_API_KEY)
 
+  // TODO: check that all necessary data is present
   console.log(data)
 
   // cache response for 5 mins

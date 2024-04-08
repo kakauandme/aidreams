@@ -19,6 +19,8 @@ export default async function getWeather(location, cache, api_key) {
       )
       const weather_data = await weather_response.json()
 
+      // TODO: check that result is a success
+
       console.log(weather_data)
       // console.log(weather_data.current.weather[0])
 
