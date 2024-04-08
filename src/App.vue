@@ -6,29 +6,19 @@ import { ref, computed } from 'vue'
 
 const isLoading = ref(true)
 const data = ref({})
-const unsplashPhoto = computed(() => {
-  return isLoading.value
-    ? null
-    : 'url(https://source.unsplash.com/daily?' +
-        data.value.city +
-        '%20' +
-        data.value.country +
-        ',' +
-        data.value.weather.name +
-        ')'
+// const unsplashPhoto = computed(() => {
+//   return isLoading.value
+//     ? null
+//     : `url(https://source.unsplash.com/daily?${data.value.location.city}%20${data.value.location.country},${data.value.weather.name})`
+// })
+
+const bgImage = computed(() => {
+  return isLoading.value ? null : `url(${data.value.image})`
 })
 
 function updateTags() {
   document.querySelector('link[rel="icon"]').href = data.value.weather.icon
-  document.title =
-    data.value.weather.temp +
-    '°' +
-    data.value.symbol +
-    ' and ' +
-    data.value.weather.description +
-    ' in ' +
-    data.value.city +
-    ' | WeatherScape'
+  document.title = `${data.value.weather.temperature}°${data.value.weather.symbol} and ${data.value.weather.name} in ${data.value.location.city} | WeatherScape`
 }
 
 async function init() {
@@ -54,17 +44,17 @@ init()
 <template>
   <section
     :style="{
-      backgroundImage: unsplashPhoto
+      backgroundImage: bgImage
     }"
   >
     <header>
       <p>WeatherScape</p>
     </header>
     <main v-if="!isLoading">
-      <h4>{{ data.city }}</h4>
-      <p>{{ data.region }}, {{ data.country }}</p>
+      <h4>{{ data.location.city }}</h4>
+      <p>{{ data.location.region }}, {{ data.location.country }}</p>
       <img class="icon" :src="data.weather.icon" alt="Weather icon" width="100" height="100" />
-      <h1>{{ data.weather.temp }}°{{ data.symbol }}</h1>
+      <h1>{{ data.weather.temperature }}°{{ data.weather.symbol }}</h1>
       <p class="description">{{ data.weather.description }}</p>
     </main>
     <!-- <RouterView /> -->

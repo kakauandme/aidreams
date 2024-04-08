@@ -4,8 +4,11 @@
   --vt-c-black: 24, 24, 24;
   --vt-c-black-mute: 125, 125, 125;
 
-  --system-ui: 'Noto Serif', serif;
-  /* system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; */
+  --system: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  --serif: 'Noto Serif', serif;
+
+  --cursive: 'Gloria Hallelujah', cursive;
 }
 
 /* semantic color variables for this project */
@@ -31,11 +34,14 @@
 body {
   color: rgba(var(--color-text), 1);
   background: rgba(var(--color-background), 1);
-  font-family: var(--system-ui);
-  font-optical-sizing: auto;
+  font-family: var(--cursive);
+
   font-weight: 400;
   font-style: normal;
+
+  /* font-optical-sizing: auto;
   font-variation-settings: 'wdth' 100;
+  font-optical-sizing: auto; */
   line-height: 1.5em;
 }
 
