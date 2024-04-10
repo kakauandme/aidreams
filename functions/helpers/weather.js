@@ -1,6 +1,6 @@
 import { getWeatherSymbol } from '../helpers/countries'
 
-export default async function getWeather(location, cache, api_key) {
+export default async function getWeather(location, KV, api_key) {
   let result = {}
 
   result.symbol = getWeatherSymbol(location.country_code)
@@ -8,7 +8,7 @@ export default async function getWeather(location, cache, api_key) {
   // cache weather data for current location
   const weather_key = 'weather_' + location.latitude + '_' + location.longitude
 
-  const weather_cache = await cache.get(weather_key)
+  const weather_cache = await KV.get(weather_key)
 
   // check if weather is set for the coordinates
   if (!weather_cache) {
@@ -21,7 +21,7 @@ export default async function getWeather(location, cache, api_key) {
 
       // TODO: check that result is a success
 
-      console.log(weather_data)
+      // console.log(weather_data)
       // console.log(weather_data.current.weather[0])
 
       result.temperature = Math.round(weather_data.current.temp)
@@ -37,7 +37,7 @@ export default async function getWeather(location, cache, api_key) {
     }
 
     // add weather to cache for 15mins
-    await cache.put(weather_key, JSON.stringify(result), {
+    await KV.put(weather_key, JSON.stringify(result), {
       expirationTtl: 60 * 15
     })
   } else {

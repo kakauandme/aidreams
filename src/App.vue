@@ -18,7 +18,7 @@ const bgImage = computed(() => {
 
 function updateTags() {
   document.querySelector('link[rel="icon"]').href = data.value.weather.icon
-  document.title = `${data.value.weather.temperature}°${data.value.weather.symbol} and ${data.value.weather.name} in ${data.value.location.city} | WeatherScape`
+  document.title = `${data.value.weather.temperature}°${data.value.weather.symbol} and ${data.value.weather.name} in ${data.value.location.city} | AI dreams`
 }
 
 async function init() {
@@ -48,7 +48,7 @@ init()
     }"
   >
     <header>
-      <p>WeatherScape</p>
+      <p>AI dreams</p>
     </header>
     <main v-if="!isLoading">
       <h4>{{ data.location.city }}</h4>
