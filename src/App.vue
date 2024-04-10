@@ -1,6 +1,6 @@
 <script setup>
 // import { RouterLink, RouterView } from 'vue-router'
-// import HelloWorld from './components/HelloWorld.vue'
+import Loader from './components/Loader.vue'
 
 import { ref, computed } from 'vue'
 
@@ -50,13 +50,14 @@ init()
     <header>
       <p>AI dreams</p>
     </header>
-    <main v-if="!isLoading">
+    <main v-if="isLoading">
       <h4>{{ data.location.city }}</h4>
       <p>{{ data.location.region }}, {{ data.location.country }}</p>
       <img class="icon" :src="data.weather.icon" alt="Weather icon" width="100" height="100" />
       <h1>{{ data.weather.temperature }}°{{ data.weather.symbol }}</h1>
       <p class="description">{{ data.weather.description }}</p>
     </main>
+    <Loader v-else />
     <!-- <RouterView /> -->
     <footer>
       <p>
