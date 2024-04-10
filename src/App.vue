@@ -13,22 +13,34 @@ const data = ref({})
 // })
 
 const bgImage = computed(() => {
-  return isLoading.value ? null : `url(${data.value.image})`
+  return isLoading.value ? null : `url("/r2/${data.value.image.key}")`
+  //return isLoading.value ? null : `url(${data.value.image.url})`
+})
+
+const title = computed(() => {
+  const article = ['a', 'e', 'i', 'o', 'u'].includes(
+    data.value.date_and_time.season[0].toLowerCase()
+  )
+    ? 'an'
+    : 'a'
+
+  return `${data.value.location.city} in ${data.value.weather.description} on ${article} ${data.value.date_and_time.season.toLowerCase()} ${data.value.date_and_time.time_of_day.toLowerCase()}`
 })
 
 function updateTags() {
   document.querySelector('link[rel="icon"]').href = data.value.weather.icon
-  document.title = `${data.value.weather.temperature}°${data.value.weather.symbol} and ${data.value.weather.name} in ${data.value.location.city} | AI dreams`
+  document.title = `${title.value} | AI dreams`
 }
 
 async function init() {
+  if (!isLoading.value) return
   try {
     isLoading.value = true
     const response = await fetch('/init')
 
     const response_data = await response.json()
 
-    console.log(response_data)
+    // console.log(response_data)
     data.value = response_data
     updateTags()
   } catch (e) {
@@ -47,8 +59,8 @@ init()
       backgroundImage: bgImage
     }"
   >
-    <header>
-      <p>AI dreams</p>
+    <header v-if="!isLoading">
+      <p>{{ title }}.</p>
     </header>
     <main v-if="!isLoading">
       <h4>{{ data.location.city }}</h4>
@@ -61,7 +73,7 @@ init()
     <!-- <RouterView /> -->
     <footer>
       <p>
-        Made by
+        Ai dreams by
         <a href="https://twitter.com/KaKaUandME" target="_blank" title="Twitter">@kakauandme</a> |
         Copyright {{ new Date().getFullYear() }} ©
       </p>
@@ -69,7 +81,7 @@ init()
   </section>
 </template>
 
-<style>
+<style lang="scss">
 section {
   background-size: cover;
   background-position: center;
@@ -97,13 +109,31 @@ section > main {
   margin: auto;
   text-align: center;
 
-  background: rgba(var(--color-background), 0.25);
+  background: rgba(var(--color-background), 0.1);
   box-shadow: 0 0 2rem rgba(var(--color-text), 0.1);
-  backdrop-filter: blur(0.25rem);
-  border: 1px solid rgba(var(--color-background), 0.25);
+  backdrop-filter: blur(0.1rem);
+  border: 1px solid rgba(var(--color-background), 0);
+  cursor: pointer;
+  user-select: none;
 
-  /* From https://css.glass */
+  //color: rgba(var(--color-text), 0.25);
+
+  // img {
+  //   opacity: 0.25;
+  // }
+
+  &:hover {
+    background: rgba(var(--color-background), 0.25);
+    backdrop-filter: blur(0.25rem);
+    color: rgba(var(--color-text), 0.9);
+    border: 1px solid rgba(var(--color-background), 0.25);
+    img {
+      opacity: 0.9;
+    }
+  }
 }
+
+/* From https://css.glass */
 
 section {
   header,

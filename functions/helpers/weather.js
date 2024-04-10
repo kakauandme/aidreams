@@ -1,12 +1,14 @@
 import { getWeatherSymbol } from '../helpers/countries'
+import { getWeatherKey } from './keys'
 
-export default async function getWeather(location, KV, api_key) {
+export default async function getWeather(data, KV, api_key) {
   let result = {}
 
-  result.symbol = getWeatherSymbol(location.country_code)
+  console.log(data)
+  result.symbol = getWeatherSymbol(data.location.country_code)
 
   // cache weather data for current location
-  const weather_key = 'weather_' + location.latitude + '_' + location.longitude
+  const weather_key = getWeatherKey(data)
 
   const weather_cache = await KV.get(weather_key)
 
@@ -15,7 +17,7 @@ export default async function getWeather(location, KV, api_key) {
     try {
       // make a request to openweathermap api to get current weather
       const weather_response = await fetch(
-        `https://api.openweathermap.org/data/3.0/onecall?lat=${location.latitude}&lon=${location.longitude}&exclude=minutely,hourly,daily,alerts&units=${location.units}&appid=${api_key}`
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${data.location.latitude}&lon=${data.location.longitude}&exclude=minutely,hourly,daily,alerts&units=${data.location.units}&appid=${api_key}`
       )
       const weather_data = await weather_response.json()
 

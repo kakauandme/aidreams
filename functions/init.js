@@ -15,13 +15,9 @@ export async function onRequestGet(context) {
     data.location.latitude
   )
 
-  data.weather = await getWeather(
-    data.location,
-    context.env.KV,
-    context.env.WEATHER_API_KEY
-  )
+  data.weather = await getWeather(data, context.env.KV, context.env.WEATHER_API_KEY)
 
-  data.image = await getImage(data, context.env.KV, context.env.OPENAI_API_KEY)
+  data.image = await getImage(data, context.env.KV, context.env.R2, context.env.OPENAI_API_KEY)
 
   // TODO: check that all necessary data is present
   console.log(data)

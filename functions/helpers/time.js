@@ -34,7 +34,7 @@ function getDayOfWeek(now) {
   return dayOfWeek
 }
 
-function getSeason(now, latitude) {
+function getSeason(now, latitude, country_code) {
   const month = now.getMonth()
 
   let season
@@ -47,6 +47,9 @@ function getSeason(now, latitude) {
     season = 'Autumn'
   } else {
     season = 'Winter'
+  }
+  if (country_code === 'US' && season === 'Autumn') {
+    return 'Fall'
   }
 
   // southern hemisphere
@@ -62,6 +65,7 @@ function getSeason(now, latitude) {
         return 'Summer'
     }
   }
+
   return season
 }
 export default function getDateAndTime(timezone, locale, latitude) {

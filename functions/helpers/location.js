@@ -15,6 +15,6 @@ export default function getLocation(cf) {
   result.country = getCountryName(result.country_code)
   result.locale = getLocale(result.country_code)
   result.units = getUnits(result.country_code)
-
+  
   return result
 }
