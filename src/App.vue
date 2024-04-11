@@ -5,6 +5,9 @@ import Loader from './components/Loader.vue'
 import { ref, computed } from 'vue'
 
 const isLoading = ref(true)
+
+const isImageLoading = ref(true)
+
 const data = ref({})
 // const unsplashPhoto = computed(() => {
 //   return isLoading.value
@@ -13,7 +16,7 @@ const data = ref({})
 // })
 
 const bgImage = computed(() => {
-  return isLoading.value ? null : `url("/r2/${data.value.image.key}")`
+  return isLoading.value ? null : `url("/r2/${data.value.key}")`
   //return isLoading.value ? null : `url(${data.value.image.url})`
 })
 
@@ -30,6 +33,12 @@ const title = computed(() => {
 function updateTags() {
   document.querySelector('link[rel="icon"]').href = data.value.weather.icon
   document.title = `${title.value} | AI dreams`
+
+  // var highResImage = new Image()
+  // highResImage.onload = function () {
+  //   isImageLoading.value = false
+  // }
+  // highResImage.src = `/r2/${data.value.key}`
 }
 
 async function init() {
@@ -54,6 +63,7 @@ init()
 </script>
 
 <template>
+  <!-- :class="{ 'is-loading': isImageLoading }" -->
   <section
     :style="{
       backgroundImage: bgImage
@@ -86,6 +96,10 @@ section {
   background-size: cover;
   background-position: center;
   height: 100vh;
+
+  &.is-loading {
+    background: none !important;
+  }
 
   /* grid container settings */
   display: grid;
