@@ -7,7 +7,7 @@ function removeSpecialCharacters(str) {
 
 function getWeatherKey(data) {
   return removeSpecialCharacters(
-    `weather_v${version}_${data.location.city}_${data.location.country}.v${version}`
+    `weather_${data.location.city}_${data.location.country}.v${version}`
   )
 }
 
