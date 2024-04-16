@@ -5,8 +5,12 @@
 </template>
 <style scoped>
 .container {
-  grid-area: main;
-
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin: auto;
   text-align: center;
 }

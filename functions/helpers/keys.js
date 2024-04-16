@@ -7,13 +7,13 @@ function removeSpecialCharacters(str) {
 
 function getWeatherKey(data) {
   return removeSpecialCharacters(
-    `weather_${data.location.city}_${data.location.country}.v${version}`
+    `weather_${data.location.city}_${data.location.country}_v${version}`
   )
 }
 
 function getImageKey(data) {
   return removeSpecialCharacters(
-    `image_${data.location.city}_${data.location.country}_${data.weather.description}_${data.date_and_time.season}_${data.date_and_time.time_of_day}.v${version}`
+    `image_${data.location.city}_${data.location.country}_${data.weather.description}_${data.date_and_time.season}_${data.date_and_time.time_of_day}_v${version}`
   )
 }
 
