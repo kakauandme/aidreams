@@ -100,7 +100,7 @@ init()
   section {
     height: 100vh;
     width: 100vh;
-    box-shadow: 0 0 1rem rgba(var(--vt-c-black), 0.6);
+    box-shadow: 0 0 1rem rgba(var(--vt-c-black), 0.1);
   }
   aside {
     padding: 1rem 1rem 1rem 3rem;
@@ -113,13 +113,16 @@ init()
     border-radius: 1rem;
     background-color: rgba(var(--color-background), 1);
     padding: 2rem 2rem 0;
-    box-shadow: 0 -1rem 1rem rgba(var(--vt-c-black), 0.6);
+    box-shadow: 0 -1rem 0.5rem rgba(var(--vt-c-black), 0.1);
   }
   section {
     width: 100%;
   }
 }
 
+section {
+  aspect-ratio: 1/1;
+}
 aside {
   display: flex; /* Uses flexbox */
   flex-direction: column; /* Stack children vertically */

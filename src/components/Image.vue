@@ -5,8 +5,6 @@
 <style scoped>
 img {
   width: 100%;
-  height: auto;
-  aspect-ratio: 1/1;
 }
 </style>
 <script setup>
