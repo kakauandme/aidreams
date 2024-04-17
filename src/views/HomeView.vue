@@ -1,46 +1,23 @@
 <template>
   <main>
     <section>
-      <Image :image_key="data.key" v-if="!isLoading" />
-      <Loader v-else />
       <!-- <header></header> -->
+      <Image :image_key="data.key" v-if="!isLoading" />
     </section>
     <aside>
-      <article v-if="!isLoading">
-        <typewriter>
-          <p class="artist">
-            <strong
-              ><a href="https://twitter.com/KaKaUandME" target="_blank" title="Twitter"
-                >Kirill Kliavin</a
-              ></strong
-            >
-            (b. 1987)
-          </p>
-          <p class="title">
-            <em>{{ title }},</em> c. {{ new Date().getFullYear() }}
-          </p>
-          <p>AI on a digital canvas</p>
-          <p>
-            <small
-              >Location: {{ data.location.latitude }}, {{ data.location.longitude }}. Weather:
-              {{ data.weather.temperature }}°{{ data.weather.symbol }},
-              {{ data.weather.description }}. Time: {{ data.date_and_time.time }},
-              {{ data.date_and_time.date }}. Style: hand-drawn illustration. Model: Dall-E 3.
-              Dimensions: 1024 pixels.
-            </small>
-          </p>
-        </typewriter>
-      </article>
+      <Info :title="title" :details="details" v-if="!isLoading" />
       <!-- <footer>©</footer> -->
     </aside>
   </main>
 </template>
 <script setup>
 // import { RouterLink, RouterView } from 'vue-router'
-import Loader from '../components/Loader.vue'
+// import Loader from '../components/Loader.vue'
 import Image from '../components/Image.vue'
+import Info from '../components/Info.vue'
 
 import { ref, computed } from 'vue'
+import Loader from '../components/Loader.vue'
 
 const isLoading = ref(true)
 
@@ -56,15 +33,13 @@ const title = computed(() => {
   return `${data.value.location.city} in ${data.value.weather.description} on ${article} ${data.value.date_and_time.season.toLowerCase()} ${data.value.date_and_time.time_of_day.toLowerCase()}`
 })
 
+const details = computed(() => {
+  return `Location: ${data.value.location.latitude}, ${data.value.location.longitude}. Weather: ${data.value.weather.temperature}°${data.value.weather.symbol}, ${data.value.weather.description}. Time: ${data.value.date_and_time.time}, ${data.value.date_and_time.date}. Style: hand-drawn illustration. Model: Dall-E 3. Dimensions: 1024 pixels.`
+})
+
 function updateTags() {
   document.querySelector('link[rel="icon"]').href = data.value.weather.icon
   document.title = `${title.value} | AI dreams`
-
-  // var highResImage = new Image()
-  // highResImage.onload = function () {
-  //   isImageLoading.value = false
-  // }
-  // highResImage.src = `/r2/${data.value.key}`
 }
 
 async function init() {
@@ -89,6 +64,17 @@ init()
 </script>
 
 <style lang="scss">
+.blink::after {
+  content: '█';
+  animation: blink 1s infinite step-start;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 @media (min-aspect-ratio: 4/3) {
   main {
     /* grid container settings */
@@ -101,15 +87,15 @@ init()
     box-shadow: 0 0 1rem rgba(var(--vt-c-black), 0.1);
   }
   aside {
-    padding: 1rem 1rem 1rem 3rem;
+    transform: translateX(-1rem);
+    padding: 1rem 0rem 1rem 3rem;
+    box-shadow: -1rem 0 0.5rem rgba(var(--vt-c-black), 0.1);
   }
 }
 
 @media (max-aspect-ratio: 4/3) {
   aside {
     transform: translateY(-1rem);
-    border-radius: 1rem;
-    background-color: rgba(var(--color-background), 1);
     padding: 2rem 2rem 0;
     box-shadow: 0 -1rem 0.5rem rgba(var(--vt-c-black), 0.1);
   }
@@ -125,14 +111,9 @@ aside {
   display: flex; /* Uses flexbox */
   flex-direction: column; /* Stack children vertically */
   justify-content: center;
+  border-radius: 1rem;
+  background-color: rgba(var(--color-background), 1);
+
   // user-select: none;
-}
-article {
-  .artist {
-    font-size: 1.5rem;
-  }
-  .title {
-    font-size: 2rem;
-  }
 }
 </style>
