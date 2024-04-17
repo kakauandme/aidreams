@@ -2,6 +2,7 @@
   <main>
     <section>
       <!-- <header></header> -->
+      <Loader />
       <Image :image_key="data.key" v-if="!isLoading" />
     </section>
     <aside>
@@ -106,8 +107,11 @@ init()
 
 section {
   aspect-ratio: 1/1;
+  position: relative;
 }
 aside {
+  position: relative;
+  z-index: 3;
   display: flex; /* Uses flexbox */
   flex-direction: column; /* Stack children vertically */
   justify-content: center;

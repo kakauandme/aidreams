@@ -9,6 +9,8 @@
 <style scoped>
 canvas {
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 </style>
 <script setup>
