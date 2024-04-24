@@ -9,7 +9,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
+  aspect-ratio: 1/1;
   width: 100%;
   display: flex;
   flex-direction: column;

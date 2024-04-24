@@ -44,7 +44,6 @@ article {
     animation-delay: 8s;
   }
 }
-
 </style>
 <script setup>
 import VTypical from 'vue-typical'

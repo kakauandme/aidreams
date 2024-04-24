@@ -5,8 +5,8 @@
       <Loader v-if="isLoading" />
       <Image :image_key="data.key" v-else />
     </section>
-    <aside v-if="!isLoading">
-      <Label :title="title" :details="details" />
+    <aside>
+      <Label :title="title" :details="details" v-if="!isLoading" />
       <!-- <footer>©</footer> -->
     </aside>
   </main>
