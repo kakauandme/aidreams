@@ -1,4 +1,5 @@
 <template>
+  <Loader v-if="isLoading" />
   <canvas
     ref="canvas"
     :width="MAX_IMAGE_SIZE"
@@ -10,10 +11,10 @@
 canvas {
   width: 100%;
   position: relative;
-  z-index: 2;
 }
 </style>
 <script setup>
+import Loader from '../components/Loader.vue'
 import { ref, computed, onMounted } from 'vue'
 
 const canvas = ref()

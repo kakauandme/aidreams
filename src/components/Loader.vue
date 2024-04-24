@@ -1,59 +1,74 @@
 <template>
   <div class="container">
-    <VCodeBlock
-      :code="code"
-      highlightjs
-      lang="javascript"
-      :theme="theme"
-      :copyButton="false"
-      :copyTab="false"
-      :copyIcons="false"
-      :floatingTabs="false"
-    />
+    <!-- TODO: move loading spinner and base CSS to <head> -->
+    <div class="loader"></div>
   </div>
 </template>
-<style>
+<style scoped>
 .container {
   position: absolute;
   top: 0;
   left: 0;
+  height: 100vh;
   width: 100%;
-  height: 100%;
-  overflow: auto;
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  text-align: center;
+}
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: rgba(var(--color-text), 1) rgba(var(--color-text), 1) transparent transparent;
+  box-sizing: border-box;
+  animation: rotation 5s ease infinite;
+}
+.loader::after,
+.loader::before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 3px solid;
+  border-color: transparent transparent rgba(var(--color-text), 0.5) rgba(var(--color-text), 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotationBack 1s linear infinite;
+  transform-origin: center center;
+}
+.loader::before {
+  width: 32px;
+  height: 32px;
+  border-color: rgba(var(--color-text), 1) rgba(var(--color-text), 1) transparent transparent;
+  animation: rotationForward 1.5s linear infinite;
 }
 
-pre,
-.hljs {
-  background-color: transparent !important;
+@keyframes rotationForward {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
 }
 </style>
-<script setup>
-import { ref, computed } from 'vue'
-
-const theme = computed(() => {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'github'
-})
-
-import VCodeBlock from '@wdns/vue-code-block'
-const code = ref(`import OpenAI from 'openai'
-
-try {
-  const openai = new OpenAI({
-    apiKey: context.env.OPENAI_API_KEY
-  })
-  const openaiResponse = await openai.images.generate({
-    model: 'dall-e-3',
-    prompt: 'Make art!',
-    n: 1,
-    quality: 'hd',
-    size: '1024x1024',
-    response_format: 'b64_json'
-  );
-} catch (e) {
-    console.error(e)
-    return
-}
-
-// loading ...`)
-</script>

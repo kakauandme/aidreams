@@ -28,15 +28,13 @@ export async function onRequestGet(context) {
     }
   })
 
-  data.prompts = getPrompts(data)
+  data.prompts = getPrompts(data, context.env.IMAGE_PROMPT)
 
   // store image data in cache
   const image_cache = await context.env.KV.get(data.key)
   if (!image_cache) {
     await context.env.KV.put(data.key, JSON.stringify(data))
   }
-
-  console.log(data)
 
   return response
 }

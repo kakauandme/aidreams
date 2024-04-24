@@ -2,23 +2,23 @@
   <main>
     <section>
       <!-- <header></header> -->
-      <Loader />
-      <Image :image_key="data.key" v-if="!isLoading" />
+      <Loader v-if="isLoading" />
+      <Image :image_key="data.key" v-else />
     </section>
-    <aside>
-      <Info :title="title" :details="details" v-if="!isLoading" />
+    <aside v-if="!isLoading">
+      <Label :title="title" :details="details" />
       <!-- <footer>©</footer> -->
     </aside>
   </main>
 </template>
 <script setup>
 // import { RouterLink, RouterView } from 'vue-router'
-// import Loader from '../components/Loader.vue'
-import Image from '../components/Image.vue'
-import Info from '../components/Info.vue'
 
-import { ref, computed } from 'vue'
+import Image from '../components/Image.vue'
+import Label from '../components/Label.vue'
 import Loader from '../components/Loader.vue'
+
+import { ref, computed, onMounted } from 'vue'
 
 const isLoading = ref(true)
 
@@ -43,7 +43,7 @@ function updateTags() {
   document.title = `${title.value} | AI dreams`
 }
 
-async function init() {
+onMounted(async () => {
   if (!isLoading.value) return
   try {
     isLoading.value = true
@@ -55,27 +55,14 @@ async function init() {
     data.value = response_data
     updateTags()
   } catch (e) {
-    console.error('Error: ', e)
+    console.error(e)
   } finally {
     isLoading.value = false
   }
-}
-
-init()
+})
 </script>
 
 <style lang="scss">
-.blink::after {
-  content: '█';
-  animation: blink 1s infinite step-start;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
 @media (min-aspect-ratio: 4/3) {
   main {
     /* grid container settings */
@@ -85,11 +72,12 @@ init()
   section {
     height: 100vh;
     width: 100vh;
-    box-shadow: 0 0 1rem rgba(var(--vt-c-black), 0.1);
+    //box-shadow: 0 0 1rem rgba(var(--vt-c-black), 0.1);
   }
   aside {
     transform: translateX(-1rem);
     padding: 1rem 0rem 1rem 3rem;
+
     box-shadow: -1rem 0 0.5rem rgba(var(--vt-c-black), 0.1);
   }
 }
@@ -110,14 +98,10 @@ section {
   position: relative;
 }
 aside {
-  position: relative;
-  z-index: 3;
   display: flex; /* Uses flexbox */
   flex-direction: column; /* Stack children vertically */
   justify-content: center;
   border-radius: 1rem;
   background-color: rgba(var(--color-background), 1);
-
-  // user-select: none;
 }
 </style>

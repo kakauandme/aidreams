@@ -47,9 +47,10 @@ body {
 
 a {
   color: rgba(var(--color-text), 0.8);
-  text-decoration: none;
+  /* text-decoration: none; */
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    /* text-decoration: underline; */
     color: rgba(var(--color-text), 1);
   }
 }
@@ -91,3 +92,20 @@ h5 {
 h6 {
   font-size: 1em;
 } /* 16px x 1   = 16px */
+
+.blink::after {
+  content: '█';
+  animation: blink 1s infinite step-start;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes appear {
+  100% {
+    opacity: 1;
+  }
+}
