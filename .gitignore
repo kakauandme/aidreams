@@ -17,7 +17,7 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
-.wrangler/
+.wrangler/*
 
 # Editor directories and files
 .vscode/*
