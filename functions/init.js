@@ -18,6 +18,10 @@ export async function onRequestGet(context) {
 
   data.weather = await getWeather(data, context.env.KV, context.env.WEATHER_API_KEY)
 
+  if (!data.weather) {
+    return new Response('Failed to get weather', { status: 500 })
+  }
+
   data.key = getImageKey(data)
 
   // create repsonse before adding prompts to it so they don't get passed to the client

@@ -23,7 +23,7 @@ const image = new Image()
 
 const MAX_IMAGE_SIZE = 1024
 
-let size = 4
+let size = 1
 
 const isLoading = ref(true)
 
@@ -81,7 +81,7 @@ function pixelate() {
     () => {
       window.requestAnimationFrame(pixelate)
     },
-    rand(100, 750)
+    rand(100, 1000)
   )
 }
 </script>

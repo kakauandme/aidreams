@@ -21,7 +21,9 @@ export default async function getWeather(data, KV, api_key) {
       )
       const weather_data = await weather_response.json()
 
-      // TODO: check that result is a success
+      if (!weather_data?.current.weather[0]) {
+        return
+      }
 
       // console.log(weather_data)
       // console.log(weather_data.current.weather[0])
@@ -36,6 +38,7 @@ export default async function getWeather(data, KV, api_key) {
       result.sunset = weather_data.current.sunset
     } catch (e) {
       console.error(e)
+      return
     }
 
     // add weather to cache for 15mins
