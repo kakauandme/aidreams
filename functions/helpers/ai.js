@@ -11,7 +11,6 @@ const styles = [
   'Fantasy',
   'Futurism',
   'Gothic',
-  'Graffiti',
   'Hand-drawn Illustration',
   'Impressionism',
   'Line Art',
@@ -107,7 +106,9 @@ function getPrompts(data, image_prompt) {
 async function generateTitle(prompt, api_key) {
   try {
     const openai = new OpenAI({
-      apiKey: api_key
+      apiKey: api_key,
+      baseURL:
+        'https://gateway.ai.cloudflare.com/v1/677edd60c5f332d8345470a5a9853879/aidreams/openai'
     })
     console.log(prompt)
     const openaiResponse = await openai.chat.completions.create({
@@ -142,10 +143,12 @@ async function generateImage(prompt, api_key) {
   // https://platform.openai.com/docs/api-reference/images/create
   try {
     const openai = new OpenAI({
-      apiKey: api_key
+      apiKey: api_key,
+      baseURL:
+        'https://gateway.ai.cloudflare.com/v1/677edd60c5f332d8345470a5a9853879/aidreams/openai'
     })
 
-    // console.log(prompt)
+    console.log(prompt)
     const openaiResponse = await openai.images.generate({
       model: 'dall-e-3',
       prompt: prompt,
@@ -158,7 +161,7 @@ async function generateImage(prompt, api_key) {
 
     // console.log(openaiResponse.data[0].b64_json)
     // console.log(openaiResponse.data[0].url)
-    // console.log(openaiResponse.data[0].revised_prompt)
+    console.log(openaiResponse.data[0].revised_prompt)
 
     if (!openaiResponse?.data[0]?.b64_json) {
       return
