@@ -6,7 +6,7 @@ const styles = [
   'Art Deco',
   'Cartoon',
   'Caricature',
-  'Comic Book ',
+  'Comic Book',
   'Expressionism',
   'Fantasy',
   'Futurism',
