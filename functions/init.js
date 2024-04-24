@@ -1,7 +1,7 @@
 import getLocation from './helpers/location'
 import getWeather from './helpers/weather'
 import getDateAndTime from './helpers/time'
-import { getPrompts } from './helpers/ai'
+import { getPrompts, getStyle } from './helpers/ai'
 import { getImageKey } from './helpers/keys'
 
 export async function onRequestGet(context) {
@@ -24,6 +24,24 @@ export async function onRequestGet(context) {
 
   data.key = getImageKey(data)
 
+  // check that cache exists for the image and get style from it if it does
+  const image_cache = await context.env.KV.get(data.key)
+
+  let update_cache = false
+  if (image_cache) {
+    let cached_data = JSON.parse(image_cache)
+    if (cached_data?.style) {
+      data.style = cached_data.style
+    } else {
+      // legacy style plug
+      data.style = 'Hand-drawn Illustration'
+      update_cache = true
+    }
+  } else {
+    data.style = getStyle(data)
+    update_cache = true
+  }
+
   // create repsonse before adding prompts to it so they don't get passed to the client
   const response = new Response(JSON.stringify(data), {
     headers: {
@@ -34,9 +52,7 @@ export async function onRequestGet(context) {
 
   data.prompts = getPrompts(data, context.env.IMAGE_PROMPT)
 
-  // store image data in cache
-  const image_cache = await context.env.KV.get(data.key)
-  if (!image_cache) {
+  if (update_cache) {
     await context.env.KV.put(data.key, JSON.stringify(data))
   }
 

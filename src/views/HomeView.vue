@@ -35,7 +35,7 @@ const title = computed(() => {
 })
 
 const details = computed(() => {
-  return `Location: ${data.value.location.latitude}, ${data.value.location.longitude}. Weather: ${data.value.weather.temperature}°${data.value.weather.symbol}, ${data.value.weather.description}. Time: ${data.value.date_and_time.time}, ${data.value.date_and_time.date}. Style: hand-drawn illustration. Model: Dall-E 3. Dimensions: 1024 pixels.`
+  return `Location: ${data.value.location.latitude}, ${data.value.location.longitude}. Weather: ${data.value.weather.temperature}°${data.value.weather.symbol}, ${data.value.weather.description}. Time: ${data.value.date_and_time.time}, ${data.value.date_and_time.date}. Style: ${data.value.style}. Model: Dall-E 3. Dimensions: 1024 pixels.`
 })
 
 function updateTags() {

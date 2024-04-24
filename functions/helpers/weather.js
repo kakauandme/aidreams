@@ -4,7 +4,7 @@ import { getWeatherKey } from './keys'
 export default async function getWeather(data, KV, api_key) {
   let result = {}
 
-  console.log(data)
+  // console.log(data)
   result.symbol = getWeatherSymbol(data.location.country_code)
 
   // cache weather data for current location

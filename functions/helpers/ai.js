@@ -1,22 +1,63 @@
 import OpenAI from 'openai'
 
+const styles = [
+  'Anime',
+  'Analog Film',
+  'Art Deco',
+  'Cartoon',
+  'Caricature',
+  'Comic Book ',
+  'Expressionism',
+  'Fantasy',
+  'Futurism',
+  'Gothic',
+  'Graffiti',
+  'Hand-drawn Illustration',
+  'Impressionism',
+  'Line Art',
+  'Manga',
+  'Minimalism',
+  'Oil Painting',
+  'Photorealistic',
+  'Pencil Drawing',
+  'Pixel Art',
+  'Pop Art',
+  'Psychedelic',
+  'Realistic',
+  'Retro',
+  'Sci-Fi',
+  'Steampunk',
+  'Synthwave',
+  'Vintage',
+  'Watercolor'
+]
+
+function getStyle() {
+  return styles[Math.floor(Math.random() * styles.length)]
+}
+
 function generatePromptTextFromData(data) {
   // TODO: add sunset information to the prompt if available
   return `Location: ${data.location.city}, ${data.location.country}
-  Weather: ${data.weather.description}
-  Temperature: ${data.weather.temperature}${data.weather.symbol}
-  Time: ${data.date_and_time.time}
-  Time of the day: ${data.date_and_time.time_of_day}
-  Date: ${data.date_and_time.date}
-  Weekday: ${data.date_and_time.day_of_week}
-  Season: ${data.date_and_time.season}`
+Weather: ${data.weather.description}
+Temperature: ${data.weather.temperature}${data.weather.symbol}
+Time: ${data.date_and_time.time}
+Time of the day: ${data.date_and_time.time_of_day}
+Date: ${data.date_and_time.date}
+Weekday: ${data.date_and_time.day_of_week}
+Season: ${data.date_and_time.season}`
 }
 
 function getPrompts(data, image_prompt) {
   let result = {}
 
-  // TODO: add style variations
-  const prompt = generatePromptTextFromData(data) + '\n\n' + image_prompt
+  const article = ['a', 'e', 'i', 'o', 'u'].includes(data.style[0].toLowerCase()) ? 'an' : 'a'
+
+  const prompt =
+    generatePromptTextFromData(data) +
+    '\n\n' +
+    image_prompt.replace('{style}', article + ' ' + data.style)
+
   result.image_prompt = prompt
 
   const messages = [
@@ -130,4 +171,4 @@ async function generateImage(prompt, api_key) {
   }
 }
 
-export { getPrompts, generateImage, generateTitle }
+export { getPrompts, getStyle, generateImage, generateTitle }
