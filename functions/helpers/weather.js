@@ -26,7 +26,6 @@ export default async function getWeather(data, KV, api_key) {
       }
 
       // console.log(weather_data)
-      // console.log(weather_data.current.weather[0])
 
       result.temperature = Math.round(weather_data.current.temp)
       result.name = weather_data.current.weather[0].main.toLowerCase()

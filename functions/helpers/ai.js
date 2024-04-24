@@ -145,7 +145,7 @@ async function generateImage(prompt, api_key) {
       apiKey: api_key
     })
 
-    console.log(prompt)
+    // console.log(prompt)
     const openaiResponse = await openai.images.generate({
       model: 'dall-e-3',
       prompt: prompt,
@@ -158,7 +158,7 @@ async function generateImage(prompt, api_key) {
 
     // console.log(openaiResponse.data[0].b64_json)
     // console.log(openaiResponse.data[0].url)
-    console.log(openaiResponse.data[0].revised_prompt)
+    // console.log(openaiResponse.data[0].revised_prompt)
 
     if (!openaiResponse?.data[0]?.b64_json) {
       return
