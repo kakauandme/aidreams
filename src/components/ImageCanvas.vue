@@ -1,5 +1,5 @@
 <template>
-  <Loader v-if="isLoading" />
+  <LoadingSpinner v-if="isLoading" />
   <canvas
     ref="canvas"
     :width="MAX_IMAGE_SIZE"
@@ -27,7 +27,7 @@ canvas {
 } */
 </style>
 <script setup>
-import Loader from '../components/Loader.vue'
+import LoadingSpinner from './LoadingSpinner.vue'
 import { ref, computed, onMounted } from 'vue'
 
 const canvas = ref()

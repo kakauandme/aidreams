@@ -2,11 +2,11 @@
   <main>
     <section>
       <!-- <header></header> -->
-      <Loader v-if="isLoading" />
-      <Image :image_key="data.key" v-else />
+      <LoadingSpinner v-if="isLoading" />
+      <ImageCanvas :image_key="data.key" v-else />
     </section>
     <aside>
-      <Label :title="title" :details="details" v-if="!isLoading" />
+      <LabelDisplay :title="title" :details="details" v-if="!isLoading" />
       <!-- <footer>©</footer> -->
     </aside>
   </main>
@@ -14,9 +14,9 @@
 <script setup>
 // import { RouterLink, RouterView } from 'vue-router'
 
-import Image from '../components/Image.vue'
-import Label from '../components/Label.vue'
-import Loader from '../components/Loader.vue'
+import ImageCanvas from '../components/ImageCanvas.vue'
+import LabelDisplay from '../components/LabelDisplay.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 
 import { ref, computed, onMounted } from 'vue'
 
