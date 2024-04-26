@@ -32,7 +32,7 @@ npm run build
 npm run pages:deploy
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Lint and format
 
 ```sh
 npm run format
