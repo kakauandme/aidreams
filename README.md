@@ -8,6 +8,12 @@ Art x AI experiments. Dreaming illustrations using AI, based on the end user, lo
 npm install
 ```
 
+to update packages run
+
+```sh
+npx npm-check -u
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh
@@ -35,7 +41,7 @@ npm run lint
 
 ### Troubleshooting
 
-If the port is already take kill it with
+If the port is already taken kill it with kindness
 
 ```sh
 lsof -n -i4TCP:8787 | awk '{print$2}' | tail -1 | xargs kill -9
