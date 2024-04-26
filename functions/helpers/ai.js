@@ -41,7 +41,7 @@ function generatePromptTextFromData(data) {
 
   const city = data.location.city ? data.location.city + ', ' : ''
   const region = data.location.region ? data.location.region + ', ' : ''
-  return `Location: ${city}${data.location.region}${data.location.country}
+  return `Location: ${city}${region}${data.location.country}
 Weather: ${data.weather.description}
 Temperature: ${data.weather.temperature}${data.weather.symbol}
 Time: ${data.date_and_time.time}
