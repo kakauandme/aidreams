@@ -2,7 +2,7 @@ import getLocation from './helpers/location'
 import getWeather from './helpers/weather'
 import getDateAndTime from './helpers/time'
 import { getPrompts, getStyle } from './helpers/ai'
-import { getImageKey } from './helpers/keys'
+import { getKey } from './helpers/keys'
 
 export async function onRequestGet(context) {
   let data = {}
@@ -22,7 +22,7 @@ export async function onRequestGet(context) {
     return new Response('Failed to get weather', { status: 500 })
   }
 
-  data.key = getImageKey(data)
+  data.key = getKey(data)
 
   // check that cache exists for the image and get style from it if it does
   const data_cache = await context.env.KV.get(data.key)
@@ -52,6 +52,6 @@ export async function onRequestGet(context) {
   if (update_cache) {
     await context.env.KV.put(data.key, JSON.stringify(data))
   }
-
+  
   return response
 }

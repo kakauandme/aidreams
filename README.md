@@ -1,14 +1,6 @@
 # AI dreams
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Art x AI experiments. Dreaming illustrations using AI, based on the end user, location, time of the day, season, etc.
 
 ## Project Setup
 
@@ -28,7 +20,7 @@ npm run pages:dev
 npm run build
 ```
 
-### Deploy 
+### Deploy
 
 ```sh
 npm run pages:deploy
@@ -41,3 +33,10 @@ npm run format
 npm run lint
 ```
 
+### Troubleshooting
+
+If the port is already take kill it with
+
+```sh
+lsof -n -i4TCP:8787 | awk '{print$2}' | tail -1 | xargs kill -9
+```

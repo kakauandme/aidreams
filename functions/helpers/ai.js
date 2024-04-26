@@ -7,22 +7,22 @@ const styles = [
   'Cartoon',
   'Caricature',
   'Comic Book',
-  'Expressionism',
+  'Expressionistic',
   // 'Fantasy',
   // 'Futurism',
   // 'Gothic',
   'Hand-drawn Illustration',
-  'Impressionism',
+  'Impressionistic',
   'Line Art',
   'Manga',
-  'Minimalism',
+  'Minimalistic',
   'Oil Painting',
   'Photorealistic',
   'Pencil Drawing',
   'Pixel Art',
   'Pop Art',
   // 'Psychedelic', // to hectic
-  'Realistic',
+  // 'Realistic',
   'Retro',
   // 'Sci-Fi',
   // 'Steampunk', // not realistic
@@ -140,7 +140,7 @@ async function generateTitle(prompt, api_key) {
   }
 }
 
-async function generateImage(prompt, api_key) {
+async function generateImageWithDallE(prompt, api_key) {
   // https://platform.openai.com/docs/api-reference/images/create
   try {
     const openai = new OpenAI({
@@ -175,4 +175,4 @@ async function generateImage(prompt, api_key) {
   }
 }
 
-export { getPrompts, getStyle, generateImage, generateTitle }
+export { getPrompts, getStyle, generateImageWithDallE, generateTitle }

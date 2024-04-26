@@ -48,7 +48,7 @@ const props = defineProps({
 })
 
 const fullUrl = computed(() => {
-  return `r2/${props.image_key}`
+  return `r2/${props.image_key}.png`
 })
 
 onMounted(() => {

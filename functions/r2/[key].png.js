@@ -1,4 +1,4 @@
-import { generateImage } from '../helpers/ai'
+import { generateImageWithDallE } from '../helpers/ai'
 
 export async function onRequestGet(context) {
   const key = context.params.key
@@ -7,6 +7,7 @@ export async function onRequestGet(context) {
   headers.set('Cache-Control', 'max-age=86400') // cache for a day
   headers.set('Content-Type', 'image/png')
 
+  // TODO: add .png to the key when changing version
   const file = await context.env.R2.get(key)
 
   // image exists in the bucket
@@ -30,7 +31,10 @@ export async function onRequestGet(context) {
       return new Response('Image prompts not found', { status: 404 })
     }
 
-    let base64Image = await generateImage(data.prompts.image_prompt, context.env.OPENAI_API_KEY)
+    let base64Image = await generateImageWithDallE(
+      data.prompts.image_prompt,
+      context.env.OPENAI_API_KEY
+    )
 
     if (!base64Image) {
       return new Response('Image generation failed', { status: 500 })
@@ -47,6 +51,7 @@ export async function onRequestGet(context) {
     }
 
     // Use R2 PUT to upload the binaryImage
+    // TODO: add .png to the key when changing version
     await context.env.R2.put(key, binaryImage, {
       httpMetadata: {
         contentType: 'image/png'
