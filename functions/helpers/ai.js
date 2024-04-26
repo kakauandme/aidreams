@@ -32,7 +32,7 @@ const styles = [
 ]
 
 function getStyle() {
-  // return 1 // Analog Film
+  // return styles[7] // Hand-drawn Illustration
   return styles[Math.floor(Math.random() * styles.length)]
 }
 
@@ -104,41 +104,41 @@ function getPrompts(data, image_prompt_template) {
 
 // https://github.com/cloudflare/cloudflare-docs/issues/12060
 // https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/
-async function generateTitle(prompt, api_key) {
-  try {
-    const openai = new OpenAI({
-      apiKey: api_key,
-      baseURL:
-        'https://gateway.ai.cloudflare.com/v1/677edd60c5f332d8345470a5a9853879/aidreams/openai'
-    })
-    console.log(prompt)
-    const openaiResponse = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: prompt,
-      temperature: 1,
-      max_tokens: 100
-      //stream: true
-    })
+// async function generateTitle(prompt, api_key) {
+//   try {
+//     const openai = new OpenAI({
+//       apiKey: api_key,
+//       baseURL:
+//         'https://gateway.ai.cloudflare.com/v1/677edd60c5f332d8345470a5a9853879/aidreams/openai'
+//     })
+//     console.log(prompt)
+//     const openaiResponse = await openai.chat.completions.create({
+//       model: 'gpt-3.5-turbo',
+//       messages: prompt,
+//       temperature: 1,
+//       max_tokens: 100
+//       //stream: true
+//     })
 
-    // // loop over the data as it is streamed from OpenAI and write it using our writeable
-    // for await (const part of stream) {
-    //   // console.log(part.choices[0]?.delta?.content || '')
-    //   writer.write(textEncoder.encode(part.choices[0]?.delta?.content || ''))
-    // }
+//     // // loop over the data as it is streamed from OpenAI and write it using our writeable
+//     // for await (const part of stream) {
+//     //   // console.log(part.choices[0]?.delta?.content || '')
+//     //   writer.write(textEncoder.encode(part.choices[0]?.delta?.content || ''))
+//     // }
 
-    // writer.close()
+//     // writer.close()
 
-    if (!openaiResponse?.choices[0]?.message?.content) {
-      return
-    }
+//     if (!openaiResponse?.choices[0]?.message?.content) {
+//       return
+//     }
 
-    console.log(openaiResponse.choices[0].message.content)
-    return openaiResponse.choices[0].message.content
-  } catch (e) {
-    console.error(e)
-    return
-  }
-}
+//     console.log(openaiResponse.choices[0].message.content)
+//     return openaiResponse.choices[0].message.content
+//   } catch (e) {
+//     console.error(e)
+//     return
+//   }
+// }
 
 async function generateImageWithDallE(prompt, api_key) {
   // https://platform.openai.com/docs/api-reference/images/create
@@ -175,4 +175,21 @@ async function generateImageWithDallE(prompt, api_key) {
   }
 }
 
-export { getPrompts, getStyle, generateImageWithDallE, generateTitle }
+// async function generateImageWithStableDiffusion(prompt, AI) {
+//   try {
+//     console.log(prompt)
+//     const image = await AI.run('@cf/stabilityai/stable-diffusion-xl-base-1.0', {
+//       prompt: prompt,
+//     })
+
+//     if (!image) {
+//       return
+//     }
+
+//     return image
+//   } catch (e) {
+//     console.error(e)
+//     return
+//   }
+// }
+export { getPrompts, getStyle, generateImageWithDallE }

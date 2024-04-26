@@ -31,6 +31,7 @@ export async function onRequestGet(context) {
       return new Response('Image prompts not found', { status: 404 })
     }
 
+    // OpenAI Dall-E image generation
     let base64Image = await generateImageWithDallE(
       data.prompts.image_prompt,
       context.env.OPENAI_API_KEY
@@ -49,6 +50,12 @@ export async function onRequestGet(context) {
     for (let i = 0; i < len; i++) {
       binaryImage[i] = binaryString.charCodeAt(i)
     }
+
+    // Stable Diffusion image generation
+    // const binaryImage = await generateImageWithStableDiffusion(
+    //   data.prompts.image_prompt,
+    //   context.env.AI
+    // )
 
     // Use R2 PUT to upload the binaryImage
     // TODO: add .png to the key when changing version
