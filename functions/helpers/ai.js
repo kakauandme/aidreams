@@ -8,9 +8,9 @@ const styles = [
   'Caricature',
   'Comic Book',
   'Expressionism',
-  'Fantasy',
-  'Futurism',
-  'Gothic',
+  // 'Fantasy',
+  // 'Futurism',
+  // 'Gothic',
   'Hand-drawn Illustration',
   'Impressionism',
   'Line Art',
@@ -21,12 +21,12 @@ const styles = [
   'Pencil Drawing',
   'Pixel Art',
   'Pop Art',
-  'Psychedelic',
+  // 'Psychedelic', // to hectic
   'Realistic',
   'Retro',
-  'Sci-Fi',
-  'Steampunk',
-  'Synthwave',
+  // 'Sci-Fi',
+  // 'Steampunk', // not realistic
+  // 'Synthwave',
   'Vintage',
   'Watercolor'
 ]

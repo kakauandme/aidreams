@@ -31,7 +31,24 @@ const title = computed(() => {
     ? 'an'
     : 'a'
 
-  return `${data.value.location.city} in ${data.value.weather.description} on ${article} ${data.value.date_and_time.season.toLowerCase()} ${data.value.date_and_time.time_of_day.toLowerCase()}`
+  let location = ''
+  if (data.value.location.city) {
+    location = data.value.location.city
+  } else if (
+    !data.value.location.city &&
+    data.value.location.region &&
+    data.value.location.country
+  ) {
+    location = `${data.value.location.region}, ${data.value.location.country}`
+  } else if (
+    !data.value.location.city &&
+    !data.value.location.region &&
+    data.value.location.country
+  ) {
+    location = data.value.location.country
+  }
+
+  return `${location} in ${data.value.weather.description} on ${article} ${data.value.date_and_time.season.toLowerCase()} ${data.value.date_and_time.time_of_day.toLowerCase()}`
 })
 
 const details = computed(() => {
