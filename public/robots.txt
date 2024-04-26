@@ -1,4 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /r2/
+
+User-agent: *
+Allow: /
 
 Sitemap: https://aidreams.wtf/sitemap.xml
