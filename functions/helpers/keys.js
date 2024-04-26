@@ -1,5 +1,5 @@
 // TODO: Add versioning to environment variables
-const version = 1
+const version = 2
 
 function removeSpecialCharacters(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '_')
@@ -7,13 +7,13 @@ function removeSpecialCharacters(str) {
 
 function getWeatherKey(data) {
   return removeSpecialCharacters(
-    `weather_${data.location.city}_${data.location.country}_v${version}`
+    `weather_${data.location.city}_${data.location.region}_${data.location.country}_v${version}`
   )
 }
 
 function getImageKey(data) {
   return removeSpecialCharacters(
-    `image_${data.location.city}_${data.location.country}_${data.weather.description}_${data.date_and_time.season}_${data.date_and_time.time_of_day}_v${version}`
+    `data_${data.location.city}_${data.location.region}_${data.location.country}_${data.weather.description}_${data.date_and_time.season}_${data.date_and_time.time_of_day}_v${version}`
   )
 }
 

@@ -25,27 +25,24 @@ export async function onRequestGet(context) {
   data.key = getImageKey(data)
 
   // check that cache exists for the image and get style from it if it does
-  const image_cache = await context.env.KV.get(data.key)
+  const data_cache = await context.env.KV.get(data.key)
 
   let update_cache = false
-  if (image_cache) {
-    let cached_data = JSON.parse(image_cache)
+  if (data_cache) {
+    let cached_data = JSON.parse(data_cache)
     if (cached_data?.style) {
       data.style = cached_data.style
-    } else {
-      // legacy style plug
-      data.style = 'Hand-drawn Illustration'
-      update_cache = true
     }
-  } else {
+  }
+  if (!data.style) {
     data.style = getStyle(data)
     update_cache = true
   }
 
-  // create repsonse before adding prompts to it so they don't get passed to the client
+  // create response before adding prompts to it so they don't get passed to the client
   const response = new Response(JSON.stringify(data), {
     headers: {
-      'content-type': 'application/json;charset=UTF-8',
+      'Content-Type': 'application/json;charset=UTF-8',
       'Cache-Control': 'max-age=300' //  cache response for (60s * 5) = 300s or 5m
     }
   })

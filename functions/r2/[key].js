@@ -4,27 +4,27 @@ export async function onRequestGet(context) {
   const key = context.params.key
 
   const headers = new Headers()
-  headers.set('Cache-Control', 'max-age=86400') // cache for a day
+  headers.set('Cache-Control', 'max-age=86400')  // cache for a day
   headers.set('Content-Type', 'image/png')
 
-  const object = await context.env.R2.get(key)
+  const file = await context.env.R2.get(key)
 
   // image exists in the bucket
-  if (object) {
+  if (file) {
     // object.writeHttpMetadata(headers)
     // headers.set('etag', object.httpEtag)
 
-    return new Response(object.body, {
+    return new Response(file.body, {
       headers
     })
   } else {
     // generate image and store in the bucket
 
-    const image_cache = await context.env.KV.get(key)
-    if (!image_cache) {
+    const data_cache = await context.env.KV.get(key)
+    if (!data_cache) {
       return new Response('Image data not found', { status: 404 })
     }
-    let data = JSON.parse(image_cache)
+    let data = JSON.parse(data_cache)
 
     if (!data?.prompts?.image_prompt) {
       return new Response('Image prompts not found', { status: 404 })

@@ -5,11 +5,11 @@ export async function onRequestGet(context) {
   //   const headers = new Headers()
   //   headers.set('Cache-Control', 'max-age=86400') // cache for a day
   //   headers.set('Content-Type', 'text/plain')
-  //   const image_cache = await context.env.KV.get(key)
-  //   if (!image_cache) {
+  //   const data_cache = await context.env.KV.get(key)
+  //   if (!data_cache) {
   //     return new Response('Image data not found', { status: 404 })
   //   }
-  //   let data = JSON.parse(image_cache)
+  //   let data = JSON.parse(data_cache)
   //   if (!data?.title) {
   //     if (!data?.prompts?.title_prompt) {
   //       return new Response('Title prompt not found', { status: 404 })

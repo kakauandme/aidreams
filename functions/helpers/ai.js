@@ -32,12 +32,16 @@ const styles = [
 ]
 
 function getStyle() {
+  // return 1 // Analog Film
   return styles[Math.floor(Math.random() * styles.length)]
 }
 
 function generatePromptTextFromData(data) {
   // TODO: add sunset information to the prompt if available
-  return `Location: ${data.location.city}, ${data.location.country}
+
+  const city = data.location.city ? data.location.city + ', ' : ''
+  const region = data.location.region ? data.location.region + ', ' : ''
+  return `Location: ${city}${data.location.region}${data.location.country}
 Weather: ${data.weather.description}
 Temperature: ${data.weather.temperature}${data.weather.symbol}
 Time: ${data.date_and_time.time}
@@ -47,19 +51,17 @@ Weekday: ${data.date_and_time.day_of_week}
 Season: ${data.date_and_time.season}`
 }
 
-function getPrompts(data, image_prompt) {
+function getPrompts(data, image_prompt_template) {
   let result = {}
 
   const article = ['a', 'e', 'i', 'o', 'u'].includes(data.style[0].toLowerCase()) ? 'an' : 'a'
 
-  const prompt =
+  result.image_prompt =
     generatePromptTextFromData(data) +
     '\n\n' +
-    image_prompt.replace('{style}', article + ' ' + data.style)
+    image_prompt_template.replace('{style}', article + ' ' + data.style)
 
-  result.image_prompt = prompt
-
-  const messages = [
+  result.title_prompt = [
     {
       role: 'system',
       content:
@@ -97,7 +99,6 @@ function getPrompts(data, image_prompt) {
       content: generatePromptTextFromData(data)
     }
   ]
-  result.title_prompt = messages
   return result
 }
 
