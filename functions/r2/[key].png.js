@@ -7,7 +7,6 @@ export async function onRequestGet(context) {
   headers.set('Cache-Control', 'max-age=86400') // cache for a day
   headers.set('Content-Type', 'image/png')
 
-  // TODO: add .png to the key when changing version
   const file = await context.env.R2.get(key)
 
   // image exists in the bucket
@@ -58,7 +57,6 @@ export async function onRequestGet(context) {
     // )
 
     // Use R2 PUT to upload the binaryImage
-    // TODO: add .png to the key when changing version
     await context.env.R2.put(key, binaryImage, {
       httpMetadata: {
         contentType: 'image/png'
