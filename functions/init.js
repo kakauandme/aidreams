@@ -7,6 +7,8 @@ import { getKey } from './helpers/keys'
 export async function onRequestGet(context) {
   let data = {}
 
+  // TODO: check for ?country&city in the query and use that as the location if available https://openweathermap.org/api/geocoding-api
+
   // get location using CLoudflare headers
   data.location = getLocation(context.request.cf)
 
@@ -52,6 +54,6 @@ export async function onRequestGet(context) {
   if (update_cache) {
     await context.env.KV.put(data.key, JSON.stringify(data))
   }
-  
+
   return response
 }

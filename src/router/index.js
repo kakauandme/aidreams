@@ -5,6 +5,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      // TODO: add country and city to the route
       path: '/',
       name: 'home',
       component: HomeView
@@ -17,6 +18,8 @@ const router = createRouter({
     //   // which is lazy-loaded when the route is visited.
     //   component: () => import('../views/AboutView.vue')
     // }
+
+    // TODO: add error page
   ]
 })
 

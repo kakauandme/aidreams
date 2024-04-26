@@ -55,6 +55,7 @@ const details = computed(() => {
   return `Location: ${data.value.location.latitude}, ${data.value.location.longitude}. Weather: ${data.value.weather.temperature}°${data.value.weather.symbol}, ${data.value.weather.description}. Time: ${data.value.date_and_time.time}, ${data.value.date_and_time.date}. Style: ${data.value.style}. Model: Dall-E 3. Dimensions: 1024 pixels.`
 })
 
+// TODO: use https://unhead.unjs.io/setup/vue/how-it-works
 function updateTags() {
   document.querySelector('link[rel="icon"]').href = data.value.weather.icon
   document.title = `${title.value} | AI dreams`
@@ -64,6 +65,8 @@ onMounted(async () => {
   if (!isLoading.value) return
   try {
     isLoading.value = true
+
+    // TODO: pass route country and city params
     const response = await fetch('/init')
 
     const response_data = await response.json()
