@@ -4,7 +4,7 @@ export async function onRequestGet(context) {
   const key = context.params.key
 
   const headers = new Headers()
-  headers.set('Cache-Control', 'max-age=86400')  // cache for a day
+  headers.set('Cache-Control', 'max-age=86400') // cache for a day
   headers.set('Content-Type', 'image/png')
 
   const file = await context.env.R2.get(key)
