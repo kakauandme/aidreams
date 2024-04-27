@@ -49,10 +49,12 @@ lsof -n -i4TCP:8787 | awk '{print$2}' | tail -1 | xargs kill -9
 
 ## Recources
 
-1. [OpenAI Dall-E](https://platform.openai.com/docs/guides/images)
-2. [Quantum memories by Refik Anadol](https://www.ngv.vic.gov.au/refik-anadol-quantum-memories/)
-3. [Byron Bay Print House](https://www.instagram.com/byronbayprinthouse/)
-4. [Apple Widgets UI Kit by Alex Muench](https://www.figma.com/community/file/857332868558500566/apple-widgets-ui-kit)
+1. [Cloudflare IP geolocation](https://developers.cloudflare.com/network/ip-geolocation/)
+2. [OpenWeather API](https://openweathermap.org/api/one-call-3)
+3. [OpenAI Dall-E API](https://platform.openai.com/docs/guides/images)
+4. [Quantum memories by Refik Anadol at NGV photos](https://www.ngv.vic.gov.au/refik-anadol-quantum-memories/)
+5. [Byron Bay Print House imagery](https://www.instagram.com/byronbayprinthouse/)
+6. [Apple Widgets UI Kit by Alex Muench](https://www.figma.com/community/file/857332868558500566/apple-widgets-ui-kit)
 
 
 
