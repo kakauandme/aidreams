@@ -47,7 +47,7 @@ If the port is already taken kill it with kindness
 lsof -n -i4TCP:8787 | awk '{print$2}' | tail -1 | xargs kill -9
 ```
 
-## Recources
+## Resources
 
 1. [Cloudflare IP geolocation](https://developers.cloudflare.com/network/ip-geolocation/)
 2. [OpenWeather API](https://openweathermap.org/api/one-call-3)
