@@ -24,6 +24,7 @@ const isLoading = ref(true)
 
 const data = ref({})
 
+// compile title string
 const title = computed(() => {
   const article = ['a', 'e', 'i', 'o', 'u'].includes(
     data.value.date_and_time.season[0].toLowerCase()
@@ -51,6 +52,7 @@ const title = computed(() => {
   return `${location} in ${data.value.weather.description} on ${article} ${data.value.date_and_time.season.toLowerCase()} ${data.value.date_and_time.time_of_day.toLowerCase()}`
 })
 
+// details string
 const details = computed(() => {
   return `Location: ${data.value.location.latitude}, ${data.value.location.longitude}. Weather: ${data.value.weather.temperature}°${data.value.weather.symbol}, ${data.value.weather.description}. Time: ${data.value.date_and_time.time}, ${data.value.date_and_time.date}. Style: ${data.value.style}. Model: Dall-E 3. Dimensions: 1024 pixels.`
 })

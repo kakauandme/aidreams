@@ -102,6 +102,7 @@ function getPrompts(data, image_prompt_template) {
   return result
 }
 
+// streming example
 // https://github.com/cloudflare/cloudflare-docs/issues/12060
 // https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/
 // async function generateTitle(prompt, api_key) {

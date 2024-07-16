@@ -6,6 +6,7 @@
     </p>
     <!-- <p class="title">{{ props.title }} c. {{ new Date().getFullYear() }}</p> -->
     <p class="title">
+      <!-- Type out the title letter by letter -->
       <v-typical :steps="['', 1000, props.title + ',']" :loop="1" :wrapper="'em'"></v-typical
       ><v-typical
         class="blink"
@@ -26,6 +27,20 @@
     </p>
   </article>
 </template>
+<script setup>
+import VTypical from 'vue-typical'
+
+const props = defineProps({
+  details: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  }
+})
+</script>
 <style scoped>
 article {
   user-select: none;
@@ -38,6 +53,8 @@ article {
   a {
     font-weight: bold;
   }
+
+  /* display everything after title is displayed */
   p:not(.title) {
     opacity: 0;
     animation: appear 2s ease forwards;
@@ -45,50 +62,3 @@ article {
   }
 }
 </style>
-<script setup>
-import VTypical from 'vue-typical'
-
-const props = defineProps({
-  //   title_key: {
-  //     type: String,
-  //     required: true
-  //   },
-  details: {
-    type: String,
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  }
-})
-
-// const isLoading = ref(true)
-
-// const response_text = ref('')
-
-// async function loadTitle() {
-//   if (!isLoading.value) return
-
-//   if (props.title) {
-//     response_text.value = props.title
-//     isLoading.value = false
-//     return
-//   }
-
-//   isLoading.value = true
-//   try {
-//     const response = await fetch('/title/' + props.title_key)
-
-//     const response_data = await response.text()
-
-//     response_text.value = response_data
-//   } catch (e) {
-//     console.error(e)
-//   } finally {
-//     isLoading.value = false
-//   }
-// }
-
-// loadTitle()
-</script>
