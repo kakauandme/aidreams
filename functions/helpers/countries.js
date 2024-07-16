@@ -4774,7 +4774,7 @@ const countries = {
     longitude: '-95.712891',
     currency_name: 'US Dollar',
     languages: ['en'],
-    capital: 'Washington D.C.',
+    capital: 'Washington',
     emoji: '🇺🇸',
     emojiU: 'U+1F1FA U+1F1F8',
     fips: 'US',
@@ -5086,4 +5086,36 @@ function getLocale(country_code) {
   }
 }
 
-export { getCountryName, getWeatherSymbol, getUnits, getLocale }
+function getCapital(country_code) {
+  if (country_code in countries) {
+    return countries[country_code].capital
+  } else {
+    return
+  }
+}
+
+function getLatitude(country_code) {
+  if (country_code in countries) {
+    return countries[country_code].latitude
+  } else {
+    return
+  }
+}
+
+function getLongitude(country_code) {
+  if (country_code in countries) {
+    return countries[country_code].longitude
+  } else {
+    return
+  }
+}
+
+export {
+  getCountryName,
+  getWeatherSymbol,
+  getUnits,
+  getLocale,
+  getCapital,
+  getLatitude,
+  getLongitude
+}

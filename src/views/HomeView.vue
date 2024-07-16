@@ -20,6 +20,9 @@ import LoadingSpinner from '../components/LoadingSpinner.vue'
 
 import { ref, computed, onMounted } from 'vue'
 
+import { useRoute } from 'vue-router'
+const route = useRoute()
+
 const isLoading = ref(true)
 
 const data = ref({})
@@ -58,6 +61,8 @@ const details = computed(() => {
 // TODO: use https://unhead.unjs.io/setup/vue/how-it-works
 function updateTags() {
   document.querySelector('link[rel="icon"]').href = data.value.weather.icon
+
+  window.history.replaceState({}, '', data.value.slug)
   document.title = `${title.value} | AI dreams`
 }
 
@@ -66,8 +71,17 @@ onMounted(async () => {
   try {
     isLoading.value = true
 
-    // TODO: pass route country and city params
-    const response = await fetch('/init')
+    let url = '/init'
+
+    // pass route country_code and city params
+   
+    if (route.params.country_code && route.params.city) {
+      url += `?country_code=${route.params.country_code}&city=${route.params.city}`
+    } else if (route.params.country_code) {
+      url += `?country_code=${route.params.country_code}`
+    }
+
+    const response = await fetch(url)
 
     const response_data = await response.json()
 

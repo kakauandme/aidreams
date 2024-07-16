@@ -1,22 +1,29 @@
 import getLocation from './helpers/location'
-import getWeather from './helpers/weather'
+import getWeather from './helpers/openweathermap'
 import getDateAndTime from './helpers/time'
 import { getPrompts, getStyle } from './helpers/ai'
-import { getKey } from './helpers/keys'
+import { getKey, getSlug } from './helpers/keys'
 
 export async function onRequestGet(context) {
   let data = {}
 
-  // TODO: check for ?country&city in the query and use that as the location if available https://openweathermap.org/api/geocoding-api
+  const { searchParams } = new URL(context.request.url)
 
-  // get location using CLoudflare headers
-  data.location = getLocation(context.request.cf)
+  let city = searchParams.get('city')
+  let country_code = searchParams.get('country_code')
 
-  data.date_and_time = getDateAndTime(
-    data.location.timezone,
-    data.location.locale,
-    data.location.latitude
+  data.location = await getLocation(
+    city,
+    country_code,
+    context.request.cf,
+    context.env.KV,
+    context.env.WEATHER_API_KEY
   )
+
+  if (!data.location) {
+    return new Response('Location not found', { status: 404 })
+  }
+
 
   data.weather = await getWeather(data, context.env.KV, context.env.WEATHER_API_KEY)
 
@@ -24,6 +31,19 @@ export async function onRequestGet(context) {
     return new Response('Failed to get weather', { status: 500 })
   }
 
+  // when getting location from ?city&country_code, timezone is not set so getting it from weather data
+  if (!data.location.timezone && data.weather.timezone) {
+    data.location.timezone = data.weather.timezone
+  }
+
+  data.date_and_time = getDateAndTime(
+    data.location.timezone,
+    data.location.locale,
+    data.location.latitude
+  )
+
+  
+  data.slug = getSlug(data)
   data.key = getKey(data)
 
   // check that cache exists for the image and get style from it if it does

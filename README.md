@@ -44,7 +44,7 @@ npm run lint
 If the port is already taken kill it with kindness
 
 ```sh
-lsof -n -i4TCP:8787 | awk '{print$2}' | tail -1 | xargs kill -9
+lsof -n -i4TCP:8788 | awk '{print$2}' | tail -1 | xargs kill -9
 ```
 
 ## Resources

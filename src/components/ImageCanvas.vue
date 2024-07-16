@@ -48,13 +48,14 @@ const props = defineProps({
 })
 
 const fullUrl = computed(() => {
-  return `r2/${props.image_key}.png`
+  return `/r2/${props.image_key}`
 })
 
 onMounted(() => {
   context.value = canvas.value?.getContext('2d')
   setSmoothing(false)
 
+  // TODO: catch 404 images
   image.onload = () => {
     isLoading.value = false
     window.requestAnimationFrame(pixelate)
