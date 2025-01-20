@@ -26,7 +26,7 @@ const data = ref({})
 
 const title = computed(() => {
   const article = ['a', 'e', 'i', 'o', 'u'].includes(
-    data.value.date_and_time.season[0].toLowerCase()
+    data.value.date_and_time.season[0].toLowerCase(),
   )
     ? 'an'
     : 'a'

@@ -8,8 +8,8 @@ const router = createRouter({
       // TODO: add country and city to the route
       path: '/',
       name: 'home',
-      component: HomeView
-    }
+      component: HomeView,
+    },
     // {
     //   path: '/about',
     //   name: 'about',
@@ -20,7 +20,7 @@ const router = createRouter({
     // }
 
     // TODO: add error page
-  ]
+  ],
 })
 
 export default router

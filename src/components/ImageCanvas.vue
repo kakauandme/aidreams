@@ -43,8 +43,8 @@ const isLoading = ref(true)
 const props = defineProps({
   image_key: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const fullUrl = computed(() => {
@@ -82,7 +82,7 @@ function pixelate() {
     0,
     0,
     canvas.value.width,
-    canvas.value.height
+    canvas.value.height,
   )
 
   if (size >= MAX_IMAGE_SIZE) {
@@ -94,7 +94,7 @@ function pixelate() {
     () => {
       window.requestAnimationFrame(pixelate)
     },
-    rand(100, 1000)
+    rand(100, 1000),
   )
 }
 </script>

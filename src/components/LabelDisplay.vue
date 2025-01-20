@@ -14,7 +14,7 @@
           8000,
           ' c. ' + new Date().getFullYear(),
           2000,
-          (e) => e.classList.remove('blink')
+          (e) => e.classList.remove('blink'),
         ]"
         :loop="1"
         :wrapper="'span'"
@@ -55,12 +55,12 @@ const props = defineProps({
   //   },
   details: {
     type: String,
-    required: true
+    required: true,
   },
   title: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 // const isLoading = ref(true)
