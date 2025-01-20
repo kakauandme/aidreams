@@ -7,22 +7,36 @@ import { getKey } from './helpers/keys'
 export async function onRequestGet(context) {
   let data = {}
 
-  // TODO: check for ?country&city in the query and use that as the location if available https://openweathermap.org/api/geocoding-api
+  // Get country and city from URL query parameters
+  const url = new URL(context.request.url)
+  const country_code = url.searchParams.get('country_code')
+  const city = url.searchParams.get('city')
 
-  // get location using CLoudflare headers
-  data.location = getLocation(context.request.cf)
+  // Decode parameters if they exist
+  const decodedCountryCode = country_code ? decodeURIComponent(country_code) : null
+  const decodedCity = city ? decodeURIComponent(city) : null
 
-  data.date_and_time = getDateAndTime(
-    data.location.timezone,
-    data.location.locale,
-    data.location.latitude
+  // get location using Cloudflare headers or URL parameters
+  data.location = await getLocation(
+    context.request.cf,
+    decodedCity,
+    decodedCountryCode,
+    context.env.WEATHER_API_KEY
   )
 
+  // Get weather data first to get the timezone
   data.weather = await getWeather(data, context.env.KV, context.env.WEATHER_API_KEY)
 
   if (!data.weather) {
     return new Response('Failed to get weather', { status: 500 })
   }
+
+  // if location timezone is not set, use weather timezone
+  if (!data.location.timezone) {
+    data.location.timezone = data.weather.timezone
+  }
+
+  data.date_and_time = getDateAndTime(data)
 
   data.key = getKey(data)
 

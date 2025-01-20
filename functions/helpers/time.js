@@ -68,16 +68,16 @@ function getSeason(now, latitude, country_code) {
 
   return season
 }
-export default function getDateAndTime(timezone, locale, latitude) {
-  const now = new Date(new Date().toLocaleString('en-US', { timeZone: timezone }))
+export default function getDateAndTime(data) {
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: data.location.timezone }))
 
   let result = {}
   result.full_date_and_time = now.toString()
-  result.time = getLocalTime(now, locale)
-  result.date = getLocalDate(now, locale)
+  result.time = getLocalTime(now, data.location.locale)
+  result.date = getLocalDate(now, data.location.locale)
   result.day_of_week = getDayOfWeek(now)
   result.time_of_day = getTimeOfDay(now)
-  result.season = getSeason(now, latitude)
+  result.season = getSeason(now, data.location.latitude, data.location.country_code)
 
   return result
 }

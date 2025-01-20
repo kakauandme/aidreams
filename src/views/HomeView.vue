@@ -19,15 +19,17 @@ import LabelDisplay from '../components/LabelDisplay.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 
 import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
+const router = useRouter()
 const isLoading = ref(true)
-
 const data = ref({})
 
 // compile title string
 const title = computed(() => {
   const article = ['a', 'e', 'i', 'o', 'u'].includes(
-    data.value.date_and_time.season[0].toLowerCase()
+    data.value.date_and_time.season[0].toLowerCase(),
   )
     ? 'an'
     : 'a'
@@ -68,14 +70,47 @@ onMounted(async () => {
   try {
     isLoading.value = true
 
-    // TODO: pass route country and city params
-    const response = await fetch('/init')
+    // Convert city names to kebab-case
+    const formatCityName = (city) => {
+      if (!city) return city
+      return city
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')  // Remove special characters
+        .replace(/\s+/g, '-')       // Replace spaces with hyphens
+    }
 
+    // Ensure country code is lowercase
+    const formatCountryCode = (countryCode) => {
+      if (!countryCode) return countryCode
+      return countryCode.toLowerCase()
+    }
+
+    // Build the init URL with route parameters if they exist
+    let initUrl = '/init'
+    if (route.params.country_code && route.params.city) {
+      initUrl += `?country_code=${encodeURIComponent(formatCountryCode(route.params.country_code))}&city=${encodeURIComponent(formatCityName(route.params.city))}`
+    }
+
+    console.log(initUrl)
+
+    const response = await fetch(initUrl)
     const response_data = await response.json()
 
     // console.log(response_data)
     data.value = response_data
     updateTags()
+
+    // Update URL if we don't have route parameters but got location data
+    if ( response_data.location) {
+
+      router.push({
+        name: 'location',
+        params: {
+          country_code: formatCountryCode(response_data.location.country_code),
+          city: formatCityName(response_data.location.city),
+        },
+      })
+    }
   } catch (e) {
     console.error(e)
   } finally {

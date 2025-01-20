@@ -28,4 +28,5 @@ coverage
 *.sln
 *.sw?
 .dev.vars
-wrangler.toml
+
+.wrangler

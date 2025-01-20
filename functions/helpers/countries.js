@@ -5063,11 +5063,12 @@ const countries = {
 const imperial_country_codes = ['US', 'LR', 'MM']
 
 function getUnits(country_code) {
-  return country_code in imperial_country_codes ? 'imperial' : 'metric'
+
+  return imperial_country_codes.includes(country_code) ? 'imperial' : 'metric'
 }
 
 function getWeatherSymbol(country_code) {
-  return country_code in imperial_country_codes ? 'F' : 'C'
+  return imperial_country_codes.includes(country_code) ? 'F' : 'C'
 }
 
 function getCountryName(country_code) {

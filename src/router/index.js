@@ -5,22 +5,22 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      // TODO: add country and city to the route
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+    },
+    {
+      path: '/:country_code/:city',
+      name: 'location',
+      component: HomeView,
+    },
+    // Catch-all route to redirect to home page
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: { name: 'home' }
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
-
     // TODO: add error page
-  ]
+  ],
 })
 
 export default router

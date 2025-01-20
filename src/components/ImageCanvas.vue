@@ -26,12 +26,12 @@ const isLoading = ref(true)
 const props = defineProps({
   image_key: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const fullUrl = computed(() => {
-  return `r2/${props.image_key}.png`
+  return `/r2/${props.image_key}`
 })
 
 onMounted(() => {
@@ -70,7 +70,7 @@ function pixelate() {
     0,
     0,
     canvas.value.width,
-    canvas.value.height
+    canvas.value.height,
   )
 
   // when the image is fully loaded, stop the pixelation
@@ -87,7 +87,7 @@ function pixelate() {
     () => {
       window.requestAnimationFrame(pixelate)
     },
-    rand(100, 1000)
+    rand(100, 1000),
   )
 }
 </script>
