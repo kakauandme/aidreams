@@ -5,9 +5,13 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      // TODO: add country and city to the route
       path: '/',
       name: 'home',
+      component: HomeView,
+    },
+    {
+      path: '/:country_code/:city',
+      name: 'location',
       component: HomeView,
     },
     // {

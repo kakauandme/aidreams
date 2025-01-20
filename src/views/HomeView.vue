@@ -19,9 +19,11 @@ import LabelDisplay from '../components/LabelDisplay.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 
 import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
+const router = useRouter()
 const isLoading = ref(true)
-
 const data = ref({})
 
 const title = computed(() => {
@@ -66,14 +68,31 @@ onMounted(async () => {
   try {
     isLoading.value = true
 
-    // TODO: pass route country and city params
-    const response = await fetch('/init')
+    // Build the init URL with route parameters if they exist
+    let initUrl = '/init'
+    if (route.params.country_code && route.params.city) {
+      initUrl += `?country_code=${route.params.country_code}&city=${route.params.city}`
+    }
 
+    console.log(initUrl)
+
+    const response = await fetch(initUrl)
     const response_data = await response.json()
 
     // console.log(response_data)
     data.value = response_data
     updateTags()
+
+    // Update URL if we don't have route parameters but got location data
+    if (!route.params.country && !route.params.city && response_data.location) {
+      router.push({
+        name: 'location',
+        params: {
+          country_code: response_data.location.country_code,
+          city: response_data.location.city,
+        },
+      })
+    }
   } catch (e) {
     console.error(e)
   } finally {

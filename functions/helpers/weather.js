@@ -31,7 +31,7 @@ export default async function getWeather(data, KV, api_key) {
       result.name = weather_data.current.weather[0].main.toLowerCase()
       result.description = weather_data.current.weather[0].description.toLowerCase()
       result.icon = `https://openweathermap.org/img/wn/${weather_data.current.weather[0].icon}@2x.png`
-      //result.timezone_offset = weather_data.timezone_offset
+      result.timezone = weather_data.timezone
       result.time = weather_data.current.dt
       result.sunrise = weather_data.current.sunrise
       result.sunset = weather_data.current.sunset
