@@ -68,10 +68,25 @@ onMounted(async () => {
   try {
     isLoading.value = true
 
+    // Convert city names to kebab-case
+    const formatCityName = (city) => {
+      if (!city) return city
+      return city
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')  // Remove special characters
+        .replace(/\s+/g, '-')       // Replace spaces with hyphens
+    }
+
+    // Ensure country code is lowercase
+    const formatCountryCode = (countryCode) => {
+      if (!countryCode) return countryCode
+      return countryCode.toLowerCase()
+    }
+
     // Build the init URL with route parameters if they exist
     let initUrl = '/init'
     if (route.params.country_code && route.params.city) {
-      initUrl += `?country_code=${route.params.country_code}&city=${route.params.city}`
+      initUrl += `?country_code=${encodeURIComponent(formatCountryCode(route.params.country_code))}&city=${encodeURIComponent(formatCityName(route.params.city))}`
     }
 
     console.log(initUrl)
@@ -84,12 +99,13 @@ onMounted(async () => {
     updateTags()
 
     // Update URL if we don't have route parameters but got location data
-    if (!route.params.country && !route.params.city && response_data.location) {
+    if ( response_data.location) {
+
       router.push({
         name: 'location',
         params: {
-          country_code: response_data.location.country_code,
-          city: response_data.location.city,
+          country_code: formatCountryCode(response_data.location.country_code),
+          city: formatCityName(response_data.location.city),
         },
       })
     }

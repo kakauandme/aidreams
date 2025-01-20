@@ -12,11 +12,15 @@ export async function onRequestGet(context) {
   const country_code = url.searchParams.get('country_code')
   const city = url.searchParams.get('city')
 
+  // Decode parameters if they exist
+  const decodedCountryCode = country_code ? decodeURIComponent(country_code) : null
+  const decodedCity = city ? decodeURIComponent(city) : null
+
   // get location using Cloudflare headers or URL parameters
   data.location = await getLocation(
     context.request.cf,
-    city,
-    country_code,
+    decodedCity,
+    decodedCountryCode,
     context.env.WEATHER_API_KEY
   )
 

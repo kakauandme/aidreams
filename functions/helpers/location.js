@@ -23,35 +23,38 @@ async function getLocationFromCity(city, country_code, api_key) {
 }
 
 export default async function getLocation(cf, city = '', country_code = '', api_key = '') {
-  let result = {}
+  let result = null
 
   // If city and country are provided, use them to get coordinates
   if (city && country_code) {
     const location = await getLocationFromCity(city, country_code, api_key)
     if (location) {
-      result.city = location.city
-      result.country_code = location.country_code
-      result.region = location.region
-      result.latitude = location.latitude
-      result.longitude = location.longitude
+      result = location
       result.timezone = ''
     }
-  } else { // if not city and country_code, use Cloudflare headers
+  }
+
+  // if not result, use Cloudflare headers
+  if (!result){
     result = {
       city: cf.city || '',
       region: cf.region || '',
       country_code: cf.country || '',
-      latitude: cf.latitude || 34.0522,
-      longitude: cf.longitude || -118.2437,
+      latitude: cf.latitude || '',
+      longitude: cf.longitude || '',
       timezone: cf.timezone || ''
     }
   }
 
+  // if no result, use default location
   if (result.city === '' && result.region === '' && result.country_code === '') {
     result.city = 'Los Angeles'
     result.region = 'California'
     result.country_code = 'US'
     result.timezone = 'America/Los_Angeles'
+
+    result.latitude = 34.0522
+    result.longitude = -118.2437
   }
   result.country = getCountryName(result.country_code)
   result.locale = getLocale(result.country_code)
