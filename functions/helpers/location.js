@@ -8,13 +8,7 @@ async function getLocationFromCity(city, country_code, api_key) {
     const data = await response.json()
 
     if (data && data.length > 0) {
-      return {
-        latitude: data[0].lat,
-        longitude: data[0].lon,
-        city: data[0].name,
-        country_code: data[0].country,
-        region: data[0].state || ''
-      }
+      return data[0]
     }
   } catch (e) {
     console.error('Error fetching location:', e)
@@ -29,8 +23,15 @@ export default async function getLocation(cf, city = '', country_code = '', api_
   if (city && country_code) {
     const location = await getLocationFromCity(city, country_code, api_key)
     if (location) {
-      result = location
-      result.timezone = ''
+      result = {
+        latitude: location.lat,
+        longitude: location.lon,
+        city: location.name,
+        country_code: location.country,
+        region: location.state || '',
+        timezone: ''
+      }
+
     }
   }
 
@@ -47,12 +48,11 @@ export default async function getLocation(cf, city = '', country_code = '', api_
   }
 
   // if no result, use default location
-  if (result.city === '' && result.region === '' && result.country_code === '') {
+  if (result.city === '') {
     result.city = 'Los Angeles'
     result.region = 'California'
     result.country_code = 'US'
     result.timezone = 'America/Los_Angeles'
-
     result.latitude = 34.0522
     result.longitude = -118.2437
   }

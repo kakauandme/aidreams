@@ -7,12 +7,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: HomeView
     },
     {
       path: '/:country_code/:city',
       name: 'location',
-      component: HomeView,
+      component: HomeView
     },
     // Catch-all route to redirect to home page
     {
@@ -20,7 +20,7 @@ const router = createRouter({
       redirect: { name: 'home' }
     }
     // TODO: add error page
-  ],
+  ]
 })
 
 export default router

@@ -29,7 +29,7 @@ const data = ref({})
 // compile title string
 const title = computed(() => {
   const article = ['a', 'e', 'i', 'o', 'u'].includes(
-    data.value.date_and_time.season[0].toLowerCase(),
+    data.value.date_and_time.season[0].toLowerCase()
   )
     ? 'an'
     : 'a'
@@ -75,8 +75,8 @@ onMounted(async () => {
       if (!city) return city
       return city
         .toLowerCase()
-        .replace(/[^\w\s-]/g, '')  // Remove special characters
-        .replace(/\s+/g, '-')       // Replace spaces with hyphens
+        .replace(/[^\w\s-]/g, '') // Remove special characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
     }
 
     // Ensure country code is lowercase
@@ -101,14 +101,13 @@ onMounted(async () => {
     updateTags()
 
     // Update URL if we don't have route parameters but got location data
-    if ( response_data.location) {
-
+    if (response_data.location) {
       router.push({
         name: 'location',
         params: {
           country_code: formatCountryCode(response_data.location.country_code),
-          city: formatCityName(response_data.location.city),
-        },
+          city: formatCityName(response_data.location.city)
+        }
       })
     }
   } catch (e) {
