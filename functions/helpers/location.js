@@ -19,6 +19,7 @@ async function getLocationFromCity(city, country_code, api_key) {
 export default async function getLocation(cf, city = '', country_code = '', api_key = '') {
   let result = null
 
+
   // If city and country are provided, use them to get coordinates
   if (city && country_code) {
     const location = await getLocationFromCity(city, country_code, api_key)
@@ -47,6 +48,7 @@ export default async function getLocation(cf, city = '', country_code = '', api_
     }
   }
 
+  // TODO: make it work without city but with region and country_code
   // if no result, use default location
   if (result.city === '') {
     result.city = 'Los Angeles'

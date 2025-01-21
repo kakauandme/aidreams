@@ -2,11 +2,12 @@
   <main>
     <section>
       <!-- <header></header> -->
-      <LoadingSpinner v-if="isLoading" />
-      <ImageCanvas :image_key="data.key" v-else />
+      <ImageCanvas :image_key="data.key" v-if="isDataLoaded" />
+      <LoadingSpinner v-else />
+
     </section>
     <aside>
-      <LabelDisplay :title="title" :details="details" v-if="!isLoading" />
+      <LabelDisplay :title="title" :details="details" v-if="isDataLoaded" />
       <!-- <footer>©</footer> -->
     </aside>
   </main>
@@ -20,14 +21,34 @@ import LoadingSpinner from '../components/LoadingSpinner.vue'
 
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
 
 const route = useRoute()
 const router = useRouter()
 const isLoading = ref(true)
 const data = ref({})
 
+const DEFAULT_META = {
+  title: 'AI dreams',
+  description: 'AI dreaming art.',
+  image:
+    'https://pub-45bccef9813f4db2a0dc170d4cf4dcd6.r2.dev/nl-amsterdam-fog-winter-early-afternoon-v3.png',
+  icon: 'https://openweathermap.org/img/wn/02n@2x.png'
+}
+
+// Check if data is loaded
+const isDataLoaded = computed(() => {
+  return data.value?.key
+    && data.value?.location?.country_code
+    && data.value?.location?.city
+    && data.value?.date_and_time?.season
+    && data.value?.weather?.description && !isLoading.value
+})
+
 // compile title string
 const title = computed(() => {
+  if (!isDataLoaded.value) return DEFAULT_META.title
+
   const article = ['a', 'e', 'i', 'o', 'u'].includes(
     data.value.date_and_time.season[0].toLowerCase()
   )
@@ -56,34 +77,64 @@ const title = computed(() => {
 
 // details string
 const details = computed(() => {
+  if (!isDataLoaded.value) return DEFAULT_META.description
   return `Location: ${data.value.location.latitude}, ${data.value.location.longitude}. Weather: ${data.value.weather.temperature}°${data.value.weather.symbol}, ${data.value.weather.description}. Time: ${data.value.date_and_time.time}, ${data.value.date_and_time.date}. Style: ${data.value.style}. Model: Dall-E 3. Dimensions: 1024 pixels.`
 })
 
-// TODO: use https://unhead.unjs.io/setup/vue/how-it-works
-function updateTags() {
-  document.querySelector('link[rel="icon"]').href = data.value.weather.icon
-  document.title = `${title.value} | AI dreams`
+// Format helpers
+const formatCityName = (city) => {
+  if (!city) return city
+  return city
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
 }
+
+const formatCountryCode = (countryCode) => {
+  if (!countryCode) return countryCode
+  return countryCode.toLowerCase()
+}
+
+// Current URL
+const currentUrl = computed(() => {
+  if (!isDataLoaded.value) return window.location.origin
+  return `${window.location.origin}/${formatCountryCode(data.value.location.country_code)}/${formatCityName(data.value.location.city)}`
+})
+
+// Image URL
+const imageUrl = computed(() => {
+  return isDataLoaded.value
+    ? `${window.location.origin}/r2/${data.value.key}`
+    : DEFAULT_META.image
+})
+
+// Setup reactive head
+useHead({
+  title: () => `${title.value} | ${DEFAULT_META.title}`,
+  meta: [
+    { name: 'description', content: () => details.value },
+    // Open Graph
+    { property: 'og:title', content: () => title.value },
+    { property: 'og:description', content: () => details.value },
+    { property: 'og:image', content: () => imageUrl.value },
+    { property: 'og:url', content: () => currentUrl.value },
+    { property: 'og:site_name', content: () => DEFAULT_META.title },
+    { property: 'og:type', content: 'website' },
+    // Twitter
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: () => title.value },
+    { name: 'twitter:description', content: () => details.value },
+    { name: 'twitter:image', content: () => imageUrl.value },
+    { name: 'twitter:url', content: () => currentUrl.value },
+    { name: 'twitter:creator', content: '@kakauandme' }
+  ],
+  link: [{ rel: 'icon', href: () => data.value?.weather?.icon || DEFAULT_META.icon }]
+})
 
 onMounted(async () => {
   if (!isLoading.value) return
   try {
     isLoading.value = true
-
-    // Convert city names to kebab-case
-    const formatCityName = (city) => {
-      if (!city) return city
-      return city
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '') // Remove special characters
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-    }
-
-    // Ensure country code is lowercase
-    const formatCountryCode = (countryCode) => {
-      if (!countryCode) return countryCode
-      return countryCode.toLowerCase()
-    }
 
     // Build the init URL with route parameters if they exist
     let initUrl = '/init'
@@ -91,14 +142,10 @@ onMounted(async () => {
       initUrl += `?country_code=${encodeURIComponent(formatCountryCode(route.params.country_code))}&city=${encodeURIComponent(formatCityName(route.params.city))}`
     }
 
-    console.log(initUrl)
-
     const response = await fetch(initUrl)
     const response_data = await response.json()
 
-    // console.log(response_data)
     data.value = response_data
-    updateTags()
 
     // Update URL if we don't have route parameters but got location data
     if (response_data.location) {
