@@ -4,7 +4,6 @@
       <!-- <header></header> -->
       <ImageCanvas :image_key="data.key" v-if="isDataLoaded" />
       <LoadingSpinner v-else />
-
     </section>
     <aside>
       <LabelDisplay :title="title" :details="details" v-if="isDataLoaded" />
@@ -38,11 +37,14 @@ const DEFAULT_META = {
 
 // Check if data is loaded
 const isDataLoaded = computed(() => {
-  return data.value?.key
-    && data.value?.location?.country_code
-    && data.value?.location?.city
-    && data.value?.date_and_time?.season
-    && data.value?.weather?.description && !isLoading.value
+  return (
+    data.value?.key &&
+    data.value?.location?.country_code &&
+    data.value?.location?.city &&
+    data.value?.date_and_time?.season &&
+    data.value?.weather?.description &&
+    !isLoading.value
+  )
 })
 
 // compile title string
@@ -83,7 +85,6 @@ const details = computed(() => {
 
 // Format helpers
 const formatCityName = (city) => {
-  if (!city) return city
   return city
     .toLowerCase()
     .replace(/[^\w\s-]/g, '') // Remove special characters
@@ -91,7 +92,6 @@ const formatCityName = (city) => {
 }
 
 const formatCountryCode = (countryCode) => {
-  if (!countryCode) return countryCode
   return countryCode.toLowerCase()
 }
 
@@ -103,9 +103,8 @@ const currentUrl = computed(() => {
 
 // Image URL
 const imageUrl = computed(() => {
-  return isDataLoaded.value
-    ? `${window.location.origin}/r2/${data.value.key}`
-    : DEFAULT_META.image
+  if (!isDataLoaded.value) return DEFAULT_META.image
+  return `${window.location.origin}/r2/${data.value.key}`
 })
 
 // Setup reactive head
@@ -128,7 +127,10 @@ useHead({
     { name: 'twitter:url', content: () => currentUrl.value },
     { name: 'twitter:creator', content: '@kakauandme' }
   ],
-  link: [{ rel: 'icon', href: () => data.value?.weather?.icon || DEFAULT_META.icon }]
+  link: [
+    { rel: 'icon', href: () => data.value?.weather?.icon || DEFAULT_META.icon },
+    { rel: 'canonical', href: () => currentUrl.value }
+  ]
 })
 
 onMounted(async () => {
