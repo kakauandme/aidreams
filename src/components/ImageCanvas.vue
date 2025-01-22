@@ -1,5 +1,11 @@
 <template>
   <LoadingSpinner v-if="isLoading" />
+
+  <!--
+    TODO: add distorion
+    https://tympanus.net/codrops/tag/distortion/
+    https://tympanus.net/Development/DistortedPixels/index4.html
+   -->
   <canvas
     ref="canvas"
     :width="MAX_IMAGE_SIZE"
