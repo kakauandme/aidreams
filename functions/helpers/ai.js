@@ -11,9 +11,11 @@ const styles = [
   // 'Fantasy',
   // 'Futurism',
   // 'Gothic',
+  'Studio Ghibli',
   'Hand-drawn Illustration',
   'Impressionistic',
   'Line Art',
+  'Lego',
   'Manga',
   'Minimalistic',
   'Oil Painting',
@@ -152,13 +154,10 @@ async function generateImageWithDallE(prompt, api_key) {
 
     console.log(prompt)
     const openaiResponse = await openai.images.generate({
-      model: 'dall-e-3',
+      model: 'gpt-image-1',
       prompt: prompt,
-      n: 1,
-      quality: 'hd',
+      quality: "high",
       size: '1024x1024',
-      //response_format: 'url'
-      response_format: 'b64_json'
     })
 
     // console.log(openaiResponse.data[0].b64_json)

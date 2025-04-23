@@ -9,7 +9,7 @@
     "preview": "npm run build && wrangler pages dev ./dist",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "pages:dev": "npx wrangler pages dev -- npm run dev",
+    "pages:dev": "npx wrangler pages dev ./dist",
     "deploy": "npm run build && wrangler pages deploy ./dist"
   },
   "dependencies": {
