@@ -19,7 +19,6 @@ async function getLocationFromCity(city, country_code, api_key) {
 export default async function getLocation(cf, city = '', country_code = '', api_key = '') {
   let result = null
 
-
   // If city and country are provided, use them to get coordinates
   if (city && country_code) {
     const location = await getLocationFromCity(city, country_code, api_key)
@@ -32,12 +31,11 @@ export default async function getLocation(cf, city = '', country_code = '', api_
         region: location.state || '',
         timezone: ''
       }
-
     }
   }
 
   // if not result, use Cloudflare headers
-  if (!result){
+  if (!result) {
     result = {
       city: cf.city || '',
       region: cf.region || '',

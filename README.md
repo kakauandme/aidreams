@@ -55,6 +55,3 @@ lsof -n -i4TCP:8787 | awk '{print$2}' | tail -1 | xargs kill -9
 4. [Quantum memories by Refik Anadol at NGV photos](https://www.ngv.vic.gov.au/refik-anadol-quantum-memories/)
 5. [Byron Bay Print House imagery](https://www.instagram.com/byronbayprinthouse/)
 6. [Apple Widgets UI Kit by Alex Muench](https://www.figma.com/community/file/857332868558500566/apple-widgets-ui-kit)
-
-
-
