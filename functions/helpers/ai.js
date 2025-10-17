@@ -165,7 +165,7 @@ async function generateImageWithDallE(prompt, api_key) {
 
     console.log(prompt)
     const openaiResponse = await openai.images.generate({
-      model: 'gpt-image-1',
+      model: 'gpt-image-1-mini',
       prompt: prompt,
       quality: 'high',
       size: '1024x1024'
